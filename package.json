@@ -1,15 +1,49 @@
 {
-  "name": "create-akrc",
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "publishConfig": {
-    "access": "public"
-  }
+    "name": "create-akrc",
+    "version": "0.0.0",
+    "description": "",
+    "main": "./dist/cjs/index.js",
+    "scripts": {
+        "build": "bunchee",
+        "dev": "bunchee --watch",
+        "check": "biome check . --write"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "publishConfig": {
+        "access": "public"
+    },
+    "packageManager": "pnpm@9.9.0",
+    "devDependencies": {
+        "@akrc/tsconfig": "^1.1.0",
+        "@biomejs/biome": "^1.8.3",
+        "@types/node": "^22.5.1",
+        "bunchee": "^5.3.2",
+        "typescript": "^5.5.4"
+    },
+    "files": [
+        "dist"
+    ],
+    "bin": {
+        "create-akrc": "./dist/bin/create-akrc.js"
+    },
+    "module": "./dist/es/index.mjs",
+    "types": "./dist/cjs/index.d.ts",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/es/index.d.mts",
+                "default": "./dist/es/index.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/index.d.ts",
+                "default": "./dist/cjs/index.js"
+            }
+        }
+    },
+    "dependencies": {
+        "@akrc/just-fs": "^0.0.1",
+        "@akrc/monorepo-tools": "^3.0.1"
+    }
 }

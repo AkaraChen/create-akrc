@@ -1,0 +1,3 @@
+{
+    "extends": "@akrc/tsconfig/node.json"
+}
