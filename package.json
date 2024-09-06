@@ -3,7 +3,6 @@
     "version": "0.0.1",
     "description": "",
     "type": "module",
-    "main": "./dist/cjs/index.js",
     "scripts": {
         "build": "bunchee",
         "dev": "bunchee --watch",
@@ -26,7 +25,10 @@
         "type-fest": "^4.26.0",
         "typescript": "^5.5.4"
     },
-    "files": ["dist", "src/templates"],
+    "files": [
+        "dist",
+        "src/templates"
+    ],
     "bin": {
         "create-akrc": "./dist/bin/create-akrc.js"
     },
