@@ -5,3 +5,11 @@ export class ParserError extends Error {
         super(`Failed to parse file: ${file}`);
     }
 }
+
+export class ZodValidationError extends Error {
+    __tag = 'ZodValidationError';
+
+    constructor(public readonly errors: any) {
+        super('Validation failed');
+    }
+}

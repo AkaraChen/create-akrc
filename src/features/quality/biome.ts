@@ -10,10 +10,7 @@ export const biome: IFeature = {
     name: 'biome',
     setup(ctx) {
         return Effect.gen(function* () {
-            yield* ctx.addDeps({
-                name: '@biomejs/biome',
-                field: 'devDependencies',
-            });
+            yield* ctx.addDeps({ name: '@biomejs/biome' });
             yield* ctx.addScripts(scripts);
             const fs = yield* FileSystem.FileSystem;
             const template = yield* ctx.template('biome');

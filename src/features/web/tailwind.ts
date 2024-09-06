@@ -10,18 +10,9 @@ export const tailwind: IFeature = {
     setup(ctx) {
         return Effect.gen(function* () {
             yield* ctx.addDeps(
-                {
-                    name: 'tailwindcss',
-                    field: 'devDependencies',
-                },
-                {
-                    name: 'autoprefixer',
-                    field: 'devDependencies',
-                },
-                {
-                    name: 'postcss',
-                    field: 'devDependencies',
-                },
+                { name: 'tailwindcss' },
+                { name: 'autoprefixer' },
+                { name: 'postcss' },
             );
             const exec = yield* CommandExecutor.CommandExecutor;
             const process = yield* exec.start(

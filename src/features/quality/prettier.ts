@@ -36,14 +36,9 @@ export const prettier: IFeature<{
         const { plugins } = options;
         return Effect.gen(function* () {
             yield* ctx.addDeps(
-                {
-                    name: 'prettier',
-                    field: 'devDependencies',
-                },
+                { name: 'prettier' },
                 ...plugins.map((plugin) => ({
                     name: `prettier-plugin-${plugin}`,
-                    version: 'latest',
-                    field: 'devDependencies' as const,
                 })),
             );
             const template = yield* ctx.template('prettier');

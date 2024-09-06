@@ -15,10 +15,7 @@ export const lefthook: IFeature = {
     name: 'lefthook',
     setup(ctx) {
         return Effect.gen(function* () {
-            yield* ctx.addDeps({
-                name: 'lefthook',
-                field: 'devDependencies',
-            });
+            yield* ctx.addDeps({ name: 'lefthook' });
             yield* ctx.addScripts(scripts);
             const fs = yield* FileSystem.FileSystem;
             yield* fs.writeFile('lefthook.toml', new Uint8Array());

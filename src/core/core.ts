@@ -71,7 +71,7 @@ export class Context {
         ...deps: Array<{
             name: string;
             version?: string;
-            field: 'dependencies' | 'devDependencies';
+            field?: 'dependencies' | 'devDependencies';
         }>
     ) {
         return pipe(
@@ -83,15 +83,16 @@ export class Context {
                 Effect.gen(function* () {
                     yield* Effect.forEach(deps, (dep) => {
                         return Effect.gen(function* () {
-                            if (getDep(pkg, dep.name)) {
+                            const { name, field = 'devDependencies' } = dep;
+                            if (getDep(pkg, name)) {
                                 return;
                             }
                             const version = dep.version
                                 ? dep.version
-                                : yield* getLatestVersion(dep.name);
-                            pkg[dep.field] = {
-                                ...pkg[dep.field],
-                                [dep.name]: version,
+                                : yield* getLatestVersion(name);
+                            pkg[field] = {
+                                ...pkg[field],
+                                [name]: version,
                             };
                         });
                     });

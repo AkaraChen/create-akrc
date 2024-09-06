@@ -13,10 +13,7 @@ export const vitest: IFeature = {
     name: 'vitest',
     setup(ctx) {
         return Effect.gen(function* () {
-            yield* ctx.addDeps({
-                name: 'vitest',
-                field: 'devDependencies',
-            });
+            yield* ctx.addDeps({ name: 'vitest' });
             yield* ctx.addScripts(scripts);
             const template = yield* ctx.template('vitest.config');
             const content = yield* Effect.sync(() => {

@@ -15,10 +15,7 @@ export const tsup: IFeature = {
     setup(ctx) {
         return Effect.gen(function* () {
             yield* switchToModule(ctx);
-            yield* ctx.addDeps({
-                name: 'tsup',
-                field: 'devDependencies',
-            });
+            yield* ctx.addDeps({ name: 'tsup' });
             const config = yield* ctx.join('tsup.config.ts');
             const template = yield* ctx.template('tsup');
             const fs = yield* FileSystem.FileSystem;

@@ -15,10 +15,7 @@ export const jest: IFeature = {
         return Effect.gen(function* () {
             yield* ctx.addDeps(
                 ...['jest', 'typescript', 'ts-jest', '@types/jest'].map(
-                    (dep) => ({
-                        name: dep,
-                        field: 'devDependencies' as const,
-                    }),
+                    (dep) => ({ name: dep }),
                 ),
             );
             yield* ctx.addScripts(scripts);

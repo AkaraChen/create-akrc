@@ -6,7 +6,7 @@ import type {
 } from '@effect/platform';
 import type { Effect, Encoding, Scope } from 'effect';
 import type { Context } from '../core/core';
-import type { ParserError } from '../errors/schema';
+import type { ParserError, ZodValidationError } from '../errors/schema';
 
 export type Mode = 'setup' | 'teardown';
 
@@ -16,7 +16,10 @@ export interface ILifecycle {
 
 type Task<T> = Effect.Effect<
     T,
-    ParserError | PlatformError.PlatformError | Encoding.DecodeException,
+    | ParserError
+    | ZodValidationError
+    | PlatformError.PlatformError
+    | Encoding.DecodeException,
     | CommandExecutor.CommandExecutor
     | Scope.Scope
     | FileSystem.FileSystem

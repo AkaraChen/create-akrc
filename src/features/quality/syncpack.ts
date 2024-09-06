@@ -10,12 +10,7 @@ export const syncpack: IFeature = {
     name: 'syncpack',
     setup(ctx) {
         return Effect.gen(function* () {
-            yield* ctx.addDeps(
-                ...deps.map((dep) => ({
-                    name: dep,
-                    field: 'devDependencies' as const,
-                })),
-            );
+            yield* ctx.addDeps(...deps.map((dep) => ({ name: dep })));
             yield* ctx.addScripts(scripts);
         });
     },
