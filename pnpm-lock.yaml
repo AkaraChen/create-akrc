@@ -41,12 +41,15 @@ importers:
       tinyexec:
         specifier: ^0.3.0
         version: 0.3.0
+      tinyglobby:
+        specifier: ^0.2.5
+        version: 0.2.5
     devDependencies:
       '@akrc/tsconfig':
         specifier: ^1.1.0
         version: 1.1.0
       '@biomejs/biome':
-        specifier: ^1.8.3
+        specifier: 1.8.3
         version: 1.8.3
       '@types/node':
         specifier: ^22.5.1

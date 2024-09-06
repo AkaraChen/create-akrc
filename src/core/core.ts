@@ -3,12 +3,12 @@ import { Command, Path } from '@effect/platform';
 import { FileSystem } from '@effect/platform';
 import { Effect, pipe } from 'effect';
 import enquirer from 'enquirer';
+import Handlebars from 'handlebars';
 import { packageDirectory } from 'pkg-dir';
 import { omit } from 'radash';
 import type { PackageJson } from 'type-fest';
 import { ParserError } from '../errors/schema';
 import { getLatestVersion } from './npm';
-import Handlebars from 'handlebars';
 
 export class Context {
     constructor(
@@ -23,18 +23,22 @@ export class Context {
             const str = content.toString();
             const json = yield* Effect.try<T, ParserError>({
                 try: () => JSON.parse(str),
-                catch: () => new ParserError(),
+                catch: () => new ParserError(path),
             });
             return json;
         });
     }
 
-    writeJson<T>(path: string, json: T) {
+    writeJson<T>(path: string, json: T | string) {
         return Effect.gen(function* () {
             const fs = yield* FileSystem.FileSystem;
             yield* fs.writeFile(
                 path,
-                new TextEncoder().encode(JSON.stringify(json, null, 2)),
+                new TextEncoder().encode(
+                    typeof json === 'string'
+                        ? json
+                        : JSON.stringify(json, null, 2),
+                ),
             );
         }).pipe(Effect.catchAll(Effect.logFatal));
     }
@@ -58,8 +62,7 @@ export class Context {
     ) {
         return pipe(
             Effect.log(
-                'Add dependencies: ',
-                deps.map((dep) => dep.name).join(', '),
+                `Add dependencies: ${deps.map((dep) => dep.name).join(', ')}`,
             ),
             Effect.andThen(
                 Effect.forEach(deps, (dep) => {
@@ -92,7 +95,7 @@ export class Context {
 
     addScripts(scripts: Record<string, string>) {
         return pipe(
-            Effect.log('Add scripts: ', Object.keys(scripts).join(', ')),
+            Effect.log(`Add scripts: ${Object.keys(scripts).join(', ')}`),
             Effect.andThen(
                 this.updateJson<PackageJson>('package.json', async (pkg) => {
                     pkg.scripts = {
@@ -107,7 +110,7 @@ export class Context {
 
     removeDeps(...deps: string[]) {
         return pipe(
-            Effect.log('Remove dependencies: ', deps.join(', ')),
+            Effect.log(`Remove dependencies: ${deps.join(', ')}`),
             Effect.andThen(
                 this.updateJson<PackageJson>('package.json', async (pkg) => {
                     for (const dep of deps) {
@@ -129,7 +132,9 @@ export class Context {
     removeScripts(scripts: Record<string, string>) {
         return pipe(
             Effect.andThen(
-                Effect.log('Remove scripts: ', Object.keys(scripts).join(', ')),
+                Effect.log(
+                    `Remove scripts: ${Object.keys(scripts).join(', ')}`,
+                ),
                 this.updateJson<PackageJson>('package.json', async (pkg) => {
                     for (const script of Object.keys(scripts)) {
                         if (pkg.scripts?.[script] === scripts[script]) {
