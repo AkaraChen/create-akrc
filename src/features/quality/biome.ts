@@ -1,5 +1,5 @@
 import { FileSystem } from '@effect/platform';
-import { Effect, Encoding } from 'effect';
+import { Effect } from 'effect';
 import type { IFeature } from '../type';
 
 const scripts = {
@@ -15,10 +15,7 @@ export const biome: IFeature = {
             const fs = yield* FileSystem.FileSystem;
             const template = yield* ctx.template('biome');
             const path = yield* ctx.join('biome.json');
-            yield* fs.writeFile(
-                path,
-                yield* Encoding.decodeHex(template(null)),
-            );
+            yield* fs.writeFile(path, new TextEncoder().encode(template(null)));
         });
     },
     detect(ctx) {

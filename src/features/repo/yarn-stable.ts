@@ -1,5 +1,5 @@
 import { CommandExecutor, FileSystem } from '@effect/platform';
-import { Effect, Encoding } from 'effect';
+import { Effect } from 'effect';
 import enquirer from 'enquirer';
 import type { IFeature } from '../type';
 
@@ -29,7 +29,7 @@ export const yarnStable: IFeature<{
             );
             yield* process.exitCode;
             const template = yield* ctx.template('yarnrc');
-            const content = yield* Encoding.decodeHex(template({ nodeLinker }));
+            const content = new TextEncoder().encode(template({ nodeLinker }));
             const fs = yield* FileSystem.FileSystem;
             const configPath = yield* ctx.join('.yarnrc.yml');
             yield* fs.writeFile(configPath, content);

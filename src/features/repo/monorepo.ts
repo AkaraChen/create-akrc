@@ -1,6 +1,6 @@
 import * as yaml from '@akrc/yaml';
 import { FileSystem } from '@effect/platform';
-import { Effect, Encoding } from 'effect';
+import { Effect } from 'effect';
 import Enquirer from 'enquirer';
 import type { IFeature } from '../type';
 
@@ -32,7 +32,7 @@ export const monorepo: IFeature<{
             );
             if (ctx.pm === 'pnpm') {
                 const filePath = yield* ctx.join('pnpm-workspace.yaml');
-                const content = yield* Encoding.decodeHex(
+                const content = new TextEncoder().encode(
                     yaml.dump({ packages: dirs }),
                 );
                 yield* fs.writeFile(filePath, content);

@@ -5,7 +5,6 @@ import {
     NodeRuntime,
 } from '@effect/platform-node';
 import { Effect, Layer } from 'effect';
-import { isDecodeException } from 'effect/Encoding';
 import { createContext } from '../core/core';
 import { ParserError, ZodValidationError } from '../errors/schema';
 import { exec } from '../lifecycle/exec';
@@ -25,7 +24,6 @@ const program = Effect.gen(function* () {
     yield* teardown(context, result);
 }).pipe(
     Effect.provide(Live),
-    Effect.catchIf(isDecodeException, Effect.logFatal),
     Effect.catchIf(
         (e): e is ParserError => e instanceof ParserError,
         Effect.logFatal,

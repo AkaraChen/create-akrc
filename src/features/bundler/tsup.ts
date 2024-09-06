@@ -1,5 +1,5 @@
 import { FileSystem } from '@effect/platform';
-import { Effect, Encoding } from 'effect';
+import { Effect } from 'effect';
 import type { IFeature } from '../type';
 import { entryDetect, switchToModule } from './utils';
 
@@ -23,7 +23,7 @@ export const tsup: IFeature = {
             const format = yield* ctx.package.pipe(
                 Effect.map((json) => (json.type === 'module' ? 'esm' : 'cjs')),
             );
-            const content = yield* Encoding.decodeHex(
+            const content = new TextEncoder().encode(
                 template({
                     entry,
                     format,
