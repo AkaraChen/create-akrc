@@ -1,7 +1,7 @@
-import { Effect } from 'effect';
-import type { IFeature } from '../type';
 import { CommandExecutor, FileSystem } from '@effect/platform';
+import { Effect } from 'effect';
 import { commands } from 'pm-combo';
+import type { IFeature } from '../type';
 
 const configFiles = '.storybook/**';
 const deps = [/storybook/];
