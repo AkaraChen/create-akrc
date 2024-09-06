@@ -1,3 +1,6 @@
 {
-    "extends": "@akrc/tsconfig/node.json"
+    "extends": "@akrc/tsconfig/node.json",
+    "compilerOptions": {
+        "esModuleInterop": true
+    }
 }
