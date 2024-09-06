@@ -54,6 +54,10 @@ export class Context {
 
     package = this.json<PackageJson>('package.json');
 
+    updatePackage(updator: (pkg: PackageJson) => Promise<PackageJson>) {
+        return this.updateJson<PackageJson>('package.json', updator);
+    }
+
     addDeps(
         ...deps: Array<{
             name: string;
@@ -151,7 +155,10 @@ export class Context {
     }
 
     makeCommand(strings: string[]) {
-        return Command.make(strings.at(0)!, ...strings.slice(1));
+        return pipe(
+            Command.make(strings.at(0)!, ...strings.slice(1)),
+            Command.workingDirectory(this.root),
+        );
     }
 
     join(...paths: string[]) {

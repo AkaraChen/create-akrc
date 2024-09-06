@@ -11,6 +11,9 @@ importers:
       '@akrc/monorepo-tools':
         specifier: ^3.0.1
         version: 3.0.1
+      '@akrc/yaml':
+        specifier: ^4.2.0
+        version: 4.2.0
       '@effect/platform':
         specifier: ^0.63.2
         version: 0.63.2(@effect/schema@0.72.2(effect@3.7.2))(effect@3.7.2)
@@ -74,6 +77,9 @@ packages:
 
   '@akrc/tsconfig@1.1.0':
     resolution: {integrity: sha512-756Vb1z2K9u+y95Mv0ywXI1+T+M78HCysZl8pd8HkmJqjZVMc+uhd8rLo8wTGCcJH+Yjaad1ssinDYmmWEYd1A==}
+
+  '@akrc/yaml@4.2.0':
+    resolution: {integrity: sha512-9o+d6YmdZSyd79teSdQryDuHd30sCeG88B0aqqCz9AMbDxvvhc+KgDqIXrOXOy5cSsGAAaJfxuFiWvsldtyBWA==}
 
   '@babel/code-frame@7.24.7':
     resolution: {integrity: sha512-BcYH1CVJBO9tvyIZ2jVeXgSIMvGZ2FDRvDdOIVQyuklNKSsx+eppDEBq/g47Ayw+RqNFE+URvOShmf+f/qwAlA==}
@@ -1257,6 +1263,8 @@ snapshots:
       yaml: 2.5.0
 
   '@akrc/tsconfig@1.1.0': {}
+
+  '@akrc/yaml@4.2.0': {}
 
   '@babel/code-frame@7.24.7':
     dependencies:
