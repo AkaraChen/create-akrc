@@ -4,7 +4,9 @@ import { biome } from './quality/biome';
 import { knip } from './quality/knip';
 import { lefthook } from './quality/lefthook';
 import { prettier } from './quality/prettier';
+import { syncpack } from './quality/syncpack';
 import { monorepo } from './repo/monorepo';
+import { yarnStable } from './repo/yarn-stable';
 import { jest } from './testing/jest';
 import { vitest } from './testing/vitest';
 import { storybook } from './web/storybook';
@@ -22,4 +24,6 @@ export const features = [
     storybook,
     tailwind,
     knip,
+    yarnStable,
+    syncpack,
 ];

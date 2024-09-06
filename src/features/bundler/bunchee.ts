@@ -26,13 +26,7 @@ export const bunchee: IFeature = {
         });
     },
     detect(ctx) {
-        return Effect.gen(function* () {
-            const json = yield* ctx.package;
-            if (json.devDependencies) {
-                return Boolean(json.devDependencies.bunchee);
-            }
-            return false;
-        });
+        return ctx.hasDep('bunchee');
     },
     teardown(ctx) {
         return Effect.gen(function* () {

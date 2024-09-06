@@ -1,7 +1,7 @@
-import { Effect } from 'effect';
-import type { IFeature } from '../type';
 import { CommandExecutor } from '@effect/platform';
+import { Effect } from 'effect';
 import { commands } from 'pm-combo';
+import type { IFeature } from '../type';
 
 const scripts = {
     knip: 'knip',
@@ -24,11 +24,7 @@ export const knip: IFeature = {
         });
     },
     detect(ctx) {
-        return ctx.package.pipe(
-            Effect.map(
-                (pkg) => pkg.devDependencies?.['@knip/config'] !== undefined,
-            ),
-        );
+        return ctx.hasDep('knip');
     },
     teardown(ctx) {
         return Effect.gen(function* () {

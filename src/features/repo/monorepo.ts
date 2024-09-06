@@ -1,8 +1,8 @@
+import * as yaml from '@akrc/yaml';
 import { FileSystem } from '@effect/platform';
 import { Effect, Encoding } from 'effect';
-import type { IFeature } from '../type';
 import Enquirer from 'enquirer';
-import * as yaml from '@akrc/yaml';
+import type { IFeature } from '../type';
 
 const dirs = ['packages', 'apps'];
 

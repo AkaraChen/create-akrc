@@ -3,6 +3,7 @@ import { Command, Path } from '@effect/platform';
 import { FileSystem } from '@effect/platform';
 import { Effect, pipe } from 'effect';
 import enquirer from 'enquirer';
+import { getDep } from 'fnpm-toolkit';
 import Handlebars from 'handlebars';
 import { packageDirectory } from 'pkg-dir';
 import { omit } from 'radash';
@@ -58,6 +59,14 @@ export class Context {
         return this.updateJson<PackageJson>('package.json', updator);
     }
 
+    hasDep(name: string) {
+        return pipe(
+            this.package,
+            Effect.andThen((pkg) => getDep(pkg, name)),
+            Effect.map((dep) => Boolean(dep)),
+        );
+    }
+
     addDeps(
         ...deps: Array<{
             name: string;
@@ -69,34 +78,27 @@ export class Context {
             Effect.log(
                 `Add dependencies: ${deps.map((dep) => dep.name).join(', ')}`,
             ),
-            Effect.andThen(
-                Effect.forEach(deps, (dep) => {
-                    return Effect.gen(function* () {
-                        const {
-                            name,
-                            version = yield* getLatestVersion(name),
-                            field,
-                        } = dep;
-                        return { name, version, field };
+            Effect.andThen(this.package),
+            Effect.andThen((pkg) =>
+                Effect.gen(function* () {
+                    yield* Effect.forEach(deps, (dep) => {
+                        return Effect.gen(function* () {
+                            if (getDep(pkg, dep.name)) {
+                                return;
+                            }
+                            const version = dep.version
+                                ? dep.version
+                                : yield* getLatestVersion(dep.name);
+                            pkg[dep.field] = {
+                                ...pkg[dep.field],
+                                [dep.name]: version,
+                            };
+                        });
                     });
+                    return pkg;
                 }),
             ),
-            Effect.andThen((deps) => {
-                return this.updateJson<PackageJson>(
-                    'package.json',
-                    async (pkg) => {
-                        for (const dep of deps) {
-                            if (!pkg[dep.field]?.[dep.name]) {
-                                pkg[dep.field] = {
-                                    ...pkg[dep.field],
-                                    [dep.name]: dep.version,
-                                };
-                            }
-                        }
-                        return pkg;
-                    },
-                );
-            }),
+            Effect.andThen((pkg) => this.updatePackage(async () => pkg)),
         );
     }
 
