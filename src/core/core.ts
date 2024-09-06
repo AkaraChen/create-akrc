@@ -6,6 +6,7 @@ import enquirer from 'enquirer';
 import Handlebars from 'handlebars';
 import { packageDirectory } from 'pkg-dir';
 import { omit } from 'radash';
+import { glob } from 'tinyglobby';
 import type { PackageJson } from 'type-fest';
 import { ParserError } from '../errors/schema';
 import { getLatestVersion } from './npm';
@@ -81,10 +82,12 @@ export class Context {
                     'package.json',
                     async (pkg) => {
                         for (const dep of deps) {
-                            pkg[dep.field] = {
-                                ...pkg[dep.field],
-                                [dep.name]: dep.version,
-                            };
+                            if (!pkg[dep.field]?.[dep.name]) {
+                                pkg[dep.field] = {
+                                    ...pkg[dep.field],
+                                    [dep.name]: dep.version,
+                                };
+                            }
                         }
                         return pkg;
                     },
@@ -183,6 +186,16 @@ export class Context {
                 .pipe(Effect.andThen((buffer) => buffer.toString()));
             return Handlebars.compile(content);
         });
+    }
+
+    glob(pattern: string | string[]) {
+        const patterns = Array.isArray(pattern) ? pattern : [pattern];
+        return Effect.promise(() =>
+            glob(patterns, {
+                cwd: this.root,
+                absolute: false,
+            }),
+        );
     }
 }
 

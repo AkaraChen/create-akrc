@@ -1,8 +1,7 @@
+import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 import enquirer from 'enquirer';
-import { glob } from 'tinyglobby';
 import type { IFeature } from '../type';
-import { FileSystem } from '@effect/platform';
 
 const configFiles = {
     rcs: [
@@ -60,14 +59,9 @@ export const prettier: IFeature<{
         });
     },
     detect(ctx) {
-        return Effect.gen(function* () {
-            const result = yield* Effect.promise(() =>
-                glob(configFiles.rcs, {
-                    cwd: ctx.root,
-                }),
-            );
-            return result.length > 0;
-        });
+        return ctx
+            .glob([...configFiles.rcs, configFiles.ignore])
+            .pipe(Effect.map((files) => files.length > 0));
     },
     teardown(ctx) {
         return Effect.gen(function* () {
@@ -75,11 +69,10 @@ export const prettier: IFeature<{
                 'prettier',
                 ...plugins.map((plugin) => `prettier-plugin-${plugin}`),
             );
-            const configs = yield* Effect.promise(() =>
-                glob([...configFiles.rcs, configFiles.ignore], {
-                    cwd: ctx.root,
-                }),
-            );
+            const configs = yield* ctx.glob([
+                ...configFiles.rcs,
+                configFiles.ignore,
+            ]);
             const fs = yield* FileSystem.FileSystem;
             yield* Effect.forEach(configs, (config) => fs.remove(config));
             yield* ctx.removeScripts(scripts);
