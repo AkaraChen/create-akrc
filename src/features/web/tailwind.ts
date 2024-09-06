@@ -1,33 +1,34 @@
-import { CommandExecutor, FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
-import { commands } from 'pm-combo';
 import type { IFeature } from '../type';
+import { CommandExecutor, FileSystem } from '@effect/platform';
+import { commands } from 'pm-combo';
 
-const configFiles = 'jest.config.{js,ts,mjs,cjs}';
+const configFiles = 'tailwind.config.{js,ts,mjs,cjs}';
 
-const scripts = {
-    test: 'jest',
-};
-
-export const jest: IFeature = {
-    name: 'jest',
+export const tailwind: IFeature = {
+    name: 'tailwind',
     setup(ctx) {
         return Effect.gen(function* () {
             yield* ctx.addDeps(
-                ...['jest', 'typescript', 'ts-jest', '@types/jest'].map(
-                    (dep) => ({
-                        name: dep,
-                        field: 'devDependencies' as const,
-                    }),
-                ),
+                {
+                    name: 'tailwindcss',
+                    field: 'devDependencies',
+                },
+                {
+                    name: 'autoprefixer',
+                    field: 'devDependencies',
+                },
+                {
+                    name: 'postcss',
+                    field: 'devDependencies',
+                },
             );
-            yield* ctx.addScripts(scripts);
             const exec = yield* CommandExecutor.CommandExecutor;
             yield* exec.start(
                 ctx.makeCommand(
                     commands.dlx.concat(ctx.pm, {
-                        package: 'ts-jest',
-                        args: ['config:init'],
+                        package: 'tailwindcss',
+                        args: ['init', '-p', '--ts'],
                     }),
                 ),
             );
@@ -40,8 +41,7 @@ export const jest: IFeature = {
     },
     teardown(ctx) {
         return Effect.gen(function* () {
-            yield* ctx.removeDeps('jest', 'ts-jest', '@types/jest');
-            yield* ctx.removeScripts(scripts);
+            yield* ctx.removeDeps('tailwindcss');
             const fs = yield* FileSystem.FileSystem;
             const files = yield* ctx.glob(configFiles);
             yield* Effect.forEach(files, (file) => fs.remove(file));
