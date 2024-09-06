@@ -2,11 +2,11 @@ import { Effect } from 'effect';
 import type { Context } from '../core/core';
 import type { IFeature, Mode } from '../features/type';
 
-export const exec = (
+export const exec = <T>(
     ctx: Context,
     task: {
         mode: Mode;
-        features: IFeature[];
+        features: IFeature<T>[];
     },
 ) => {
     const { features, mode } = task;
@@ -17,7 +17,7 @@ export const exec = (
                       return Effect.gen(function* () {
                           const option = features.options
                               ? yield* features.options
-                              : undefined;
+                              : (null as T);
                           return yield* features.setup(ctx, option);
                       });
                   })

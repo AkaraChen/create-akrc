@@ -24,7 +24,7 @@ export const tailwind: IFeature = {
                 },
             );
             const exec = yield* CommandExecutor.CommandExecutor;
-            yield* exec.start(
+            const process = yield* exec.start(
                 ctx.makeCommand(
                     commands.dlx.concat(ctx.pm, {
                         package: 'tailwindcss',
@@ -32,6 +32,7 @@ export const tailwind: IFeature = {
                     }),
                 ),
             );
+            yield* process.exitCode;
         });
     },
     detect(ctx) {

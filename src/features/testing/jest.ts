@@ -23,7 +23,7 @@ export const jest: IFeature = {
             );
             yield* ctx.addScripts(scripts);
             const exec = yield* CommandExecutor.CommandExecutor;
-            yield* exec.start(
+            const process = yield* exec.start(
                 ctx.makeCommand(
                     commands.dlx.concat(ctx.pm, {
                         package: 'ts-jest',
@@ -31,6 +31,7 @@ export const jest: IFeature = {
                     }),
                 ),
             );
+            yield* process.exitCode;
         });
     },
     detect(ctx) {

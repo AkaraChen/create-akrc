@@ -16,7 +16,7 @@ export const storybook: IFeature = {
     setup(ctx) {
         return Effect.gen(function* () {
             const exec = yield* CommandExecutor.CommandExecutor;
-            yield* exec.start(
+            const process = yield* exec.start(
                 ctx.makeCommand(
                     commands.dlx.concat(ctx.pm, {
                         package: 'storybook@latest',
@@ -24,6 +24,7 @@ export const storybook: IFeature = {
                     }),
                 ),
             );
+            yield* process.exitCode;
         });
     },
     detect(ctx) {

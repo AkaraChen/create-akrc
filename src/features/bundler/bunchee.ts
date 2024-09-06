@@ -14,7 +14,7 @@ export const bunchee: IFeature = {
                 name: 'bunchee',
                 field: 'devDependencies',
             });
-            yield* exec.start(
+            const process = yield* exec.start(
                 ctx.makeCommand(
                     commands.dlx.concat(ctx.pm, {
                         package: 'bunchee',
@@ -22,6 +22,7 @@ export const bunchee: IFeature = {
                     }),
                 ),
             );
+            yield* process.exitCode;
         });
     },
     detect(ctx) {

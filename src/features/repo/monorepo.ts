@@ -3,7 +3,6 @@ import { Effect, Encoding } from 'effect';
 import type { IFeature } from '../type';
 import Enquirer from 'enquirer';
 import * as yaml from '@akrc/yaml';
-import type { PackageJson } from 'type-fest';
 
 const dirs = ['packages', 'apps'];
 
@@ -56,6 +55,23 @@ export const monorepo: IFeature<{
             const pkg = yield* ctx.package;
             if (pkg.workspaces) return true;
             return false;
+        });
+    },
+    teardown(ctx) {
+        return Effect.gen(function* () {
+            const fs = yield* FileSystem.FileSystem;
+            const pnpm = yield* fs.exists(
+                yield* ctx.join('pnpm-workspace.yaml'),
+            );
+            if (pnpm) {
+                yield* fs.remove(yield* ctx.join('pnpm-workspace.yaml'));
+                yield* Effect.log('pnpm-workspace.yaml removed');
+            } else {
+                yield* ctx.updatePackage(async (pkg) => {
+                    pkg.workspaces = undefined;
+                    return pkg;
+                });
+            }
         });
     },
 };

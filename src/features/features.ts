@@ -1,6 +1,7 @@
 import { bunchee } from './bundler/bunchee';
 import { tsup } from './bundler/tsup';
 import { biome } from './quality/biome';
+import { knip } from './quality/knip';
 import { lefthook } from './quality/lefthook';
 import { prettier } from './quality/prettier';
 import { monorepo } from './repo/monorepo';
@@ -20,4 +21,5 @@ export const features = [
     tsup,
     storybook,
     tailwind,
+    knip,
 ];

@@ -7,9 +7,10 @@ import type { ILifecycle } from '../features/type';
 export const teardown = (ctx: Context, result: ILifecycle[]) => {
     return Effect.gen(function* () {
         const exec = yield* CommandExecutor.CommandExecutor;
-        yield* exec.start(
+        const process = yield* exec.start(
             pipe(ctx.makeCommand(commands.install.concat(ctx.pm, {}))),
         );
+        yield* process.exitCode;
         for (const lifecycle of result) {
             if (lifecycle.afterTeardown) {
                 yield* lifecycle.afterTeardown;

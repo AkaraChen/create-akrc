@@ -23,7 +23,7 @@ type Task<T> = Effect.Effect<
     | Path.Path
 >;
 
-export interface IFeature<T = undefined> {
+export interface IFeature<T = null> {
     name: string;
     options?: Effect.Effect<T>;
     // biome-ignore lint/suspicious/noConfusingVoidType: <explanation>

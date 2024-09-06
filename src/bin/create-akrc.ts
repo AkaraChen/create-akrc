@@ -20,6 +20,7 @@ const Live = NodeCommandExecutor.layer.pipe(
 const program = Effect.gen(function* () {
     const context = yield* createContext;
     const tasks = yield* init(context);
+    // @ts-ignore
     const result = yield* exec(context, tasks);
     yield* teardown(context, result);
 }).pipe(
@@ -29,6 +30,7 @@ const program = Effect.gen(function* () {
         (e): e is ParserError => e instanceof ParserError,
         Effect.logFatal,
     ),
+    Effect.catchAll(Effect.logFatal),
 );
 
 const runnable = Effect.scoped(program);

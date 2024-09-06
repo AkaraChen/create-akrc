@@ -24,9 +24,10 @@ export const yarnStable: IFeature<{
         const { nodeLinker } = options;
         return Effect.gen(function* () {
             const exec = yield* CommandExecutor.CommandExecutor;
-            yield* exec.start(
+            const process = yield* exec.start(
                 ctx.makeCommand(['yarn', 'set', 'version', 'stable']),
             );
+            yield* process.exitCode;
             const template = yield* ctx.template('yarnrc');
             const content = yield* Encoding.decodeHex(template({ nodeLinker }));
             const fs = yield* FileSystem.FileSystem;
