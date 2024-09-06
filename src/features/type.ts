@@ -10,9 +10,8 @@ import type { ParserError } from '../errors/schema';
 
 export type Mode = 'setup' | 'teardown';
 
-// biome-ignore lint/suspicious/noEmptyInterface: <explanation>
 export interface ILifecycle {
-    // TODO: add li fecycle hooks
+    afterTeardown?: Task<void>;
 }
 
 type Task<T> = Effect.Effect<

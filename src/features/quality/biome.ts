@@ -1,5 +1,4 @@
 import { FileSystem } from '@effect/platform';
-import { BadArgument, isPlatformError } from '@effect/platform/Error';
 import { Effect, Encoding } from 'effect';
 import type { IFeature } from '../type';
 

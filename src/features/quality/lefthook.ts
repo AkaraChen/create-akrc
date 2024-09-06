@@ -1,5 +1,5 @@
-import { Effect } from 'effect';
 import { FileSystem } from '@effect/platform';
+import { Effect } from 'effect';
 import type { IFeature } from '../type';
 
 const configFiles = [
@@ -22,6 +22,11 @@ export const lefthook: IFeature = {
             yield* ctx.addScripts(scripts);
             const fs = yield* FileSystem.FileSystem;
             yield* fs.writeFile('lefthook.toml', new Uint8Array());
+            return {
+                afterTeardown: Effect.log(
+                    'Lefthook setup finished, you may want to see documention at https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md',
+                ),
+            };
         });
     },
     detect(ctx) {
