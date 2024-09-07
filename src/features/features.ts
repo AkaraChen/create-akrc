@@ -13,27 +13,29 @@ import { tsconfig } from './quality/tsconfig';
 import { monorepo } from './repo/monorepo';
 import { yarnStable } from './repo/yarn-stable';
 import { jest } from './testing/jest';
+import { playwright } from './testing/playwright';
 import { vitest } from './testing/vitest';
 import { storybook } from './web/storybook';
 import { tailwind } from './web/tailwind';
 
 export const features = [
-	biome,
-	monorepo,
-	vitest,
-	prettier,
-	jest,
-	lefthook,
-	bunchee,
-	tsup,
-	storybook,
-	tailwind,
-	knip,
-	yarnStable,
-	syncpack,
-	rslib,
-	vitepress,
-	typedoc,
-	skott,
-	tsconfig,
+    biome,
+    monorepo,
+    vitest,
+    prettier,
+    jest,
+    lefthook,
+    bunchee,
+    tsup,
+    storybook,
+    tailwind,
+    knip,
+    yarnStable,
+    syncpack,
+    rslib,
+    vitepress,
+    typedoc,
+    skott,
+    tsconfig,
+    playwright,
 ];
