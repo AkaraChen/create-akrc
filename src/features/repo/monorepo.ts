@@ -32,7 +32,7 @@ export const monorepo: IFeature<{
             );
             if (ctx.pm === 'pnpm') {
                 const filePath = yield* ctx.join('pnpm-workspace.yaml');
-                const content = new TextEncoder().encode(
+                const content = ctx.encoder.encode(
                     yaml.dump({ packages: dirs }),
                 );
                 yield* fs.writeFile(filePath, content);

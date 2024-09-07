@@ -12,6 +12,9 @@ import type { PackageJson } from 'type-fest';
 import { ParserError } from '../errors/schema';
 import { getLatestVersion } from './npm';
 
+const decoder = new TextDecoder();
+const encoder = new TextEncoder();
+
 export class Context {
     constructor(
         public readonly root: string,
@@ -22,7 +25,7 @@ export class Context {
         return Effect.gen(function* () {
             const fs = yield* FileSystem.FileSystem;
             const content = yield* fs.readFile(path);
-            const str = content.toString();
+            const str = decoder.decode(content);
             const json = yield* Effect.try<T, ParserError>({
                 try: () => JSON.parse(str),
                 catch: () => new ParserError(path),
@@ -36,7 +39,7 @@ export class Context {
             const fs = yield* FileSystem.FileSystem;
             yield* fs.writeFile(
                 path,
-                new TextEncoder().encode(
+                encoder.encode(
                     typeof json === 'string'
                         ? json
                         : JSON.stringify(json, null, 2),
@@ -193,7 +196,7 @@ export class Context {
             );
             const content = yield* fs
                 .readFile(filePath)
-                .pipe(Effect.andThen((buffer) => buffer.toString()));
+                .pipe(Effect.andThen(decoder.decode));
             return Handlebars.compile(content);
         });
     }
@@ -207,6 +210,9 @@ export class Context {
             }),
         );
     }
+
+    encoder = encoder;
+    decoder = decoder;
 }
 
 export const createContext = Effect.gen(function* () {

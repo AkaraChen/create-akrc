@@ -41,9 +41,9 @@
         "enquirer": "^2.4.1",
         "fnpm-toolkit": "^1.10.0",
         "handlebars": "^4.7.8",
+        "latest-version": "^9.0.0",
         "pkg-dir": "^8.0.0",
         "pm-combo": "^1.9.1",
-        "query-registry": "^3.0.1",
         "radash": "^12.1.0",
         "tinyglobby": "^0.2.5",
         "try-files": "^1.1.0"

@@ -23,7 +23,7 @@ export const vitest: IFeature = {
                 const fs = yield* FileSystem.FileSystem;
                 yield* fs.writeFile(
                     yield* ctx.join(configFile),
-                    new TextEncoder().encode(content),
+                    ctx.encoder.encode(content),
                 );
             });
         });

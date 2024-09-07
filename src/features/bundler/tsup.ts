@@ -23,7 +23,7 @@ export const tsup: IFeature = {
             const format = yield* ctx.package.pipe(
                 Effect.map((json) => (json.type === 'module' ? 'esm' : 'cjs')),
             );
-            const content = new TextEncoder().encode(
+            const content = ctx.encoder.encode(
                 template({
                     entry,
                     format,

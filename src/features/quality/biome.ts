@@ -15,7 +15,7 @@ export const biome: IFeature = {
             const fs = yield* FileSystem.FileSystem;
             const template = yield* ctx.template('biome');
             const path = yield* ctx.join('biome.json');
-            yield* fs.writeFile(path, new TextEncoder().encode(template(null)));
+            yield* fs.writeFile(path, ctx.encoder.encode(template(null)));
         });
     },
     detect(ctx) {

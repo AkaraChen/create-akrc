@@ -29,7 +29,7 @@ export const yarnStable: IFeature<{
             );
             yield* process.exitCode;
             const template = yield* ctx.template('yarnrc');
-            const content = new TextEncoder().encode(template({ nodeLinker }));
+            const content = ctx.encoder.encode(template({ nodeLinker }));
             const fs = yield* FileSystem.FileSystem;
             const configPath = yield* ctx.join('.yarnrc.yml');
             yield* fs.writeFile(configPath, content);
