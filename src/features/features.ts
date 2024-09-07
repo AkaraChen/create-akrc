@@ -17,6 +17,7 @@ import { cypress } from './testing/cypress';
 import { jest } from './testing/jest';
 import { playwright } from './testing/playwright';
 import { vitest } from './testing/vitest';
+import { vitestWorkspace } from './testing/vitest-workspace';
 import { storybook } from './web/storybook';
 import { tailwind } from './web/tailwind';
 
@@ -42,4 +43,5 @@ export const features = [
     playwright,
     cypress,
     turbo,
+    vitestWorkspace,
 ];
