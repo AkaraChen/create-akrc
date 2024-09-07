@@ -1,11 +1,12 @@
 import { type PM, detectPM } from '@akrc/monorepo-tools';
-import { Command, Path } from '@effect/platform';
+import { Command, CommandExecutor, Path } from '@effect/platform';
 import { FileSystem } from '@effect/platform';
 import { Effect, Option, pipe } from 'effect';
 import enquirer from 'enquirer';
 import { getDep } from 'fnpm-toolkit';
 import Handlebars from 'handlebars';
 import { packageDirectory } from 'pkg-dir';
+import { commands } from 'pm-combo';
 import { omit } from 'radash';
 import { glob } from 'tinyglobby';
 import type { PackageJson } from 'type-fest';
@@ -270,11 +271,44 @@ export class Context {
     }
 }
 
+const selectPM = Effect.promise(() =>
+    enquirer.prompt<{
+        pm: PM;
+    }>({
+        type: 'select',
+        name: 'pm',
+        message: 'Select package manager',
+        choices: ['npm', 'yarn', 'pnpm'],
+    }),
+).pipe(Effect.map((result) => result.pm));
+
 export const createContext = Effect.gen(function* () {
     const cwd = process.cwd();
     const root = yield* Effect.promise(() => packageDirectory({ cwd }));
     if (!root) {
-        // TODO: create a new package.json
+        const { confirmed } = yield* Effect.promise(() =>
+            enquirer.prompt<{
+                confirmed: boolean;
+            }>({
+                type: 'confirm',
+                name: 'confirmed',
+                message:
+                    'Cannot find package directory. Do you want to use current directory as root?',
+            }),
+        );
+        if (confirmed) {
+            const pm = yield* selectPM;
+            const exec = yield* CommandExecutor.CommandExecutor;
+            const [command, ...args] = commands.init.concat(pm, {
+                interactively: false,
+            });
+            yield* Effect.log('Initializing package');
+            const process = yield* exec.start(
+                pipe(Command.make(command!, ...args)),
+            );
+            yield* process.exitCode;
+            return new Context(cwd, pm);
+        }
         yield* Effect.die(new Error('Cannot find package directory'));
     }
     const pm = yield* Effect.tryPromise(async () => detectPM(root!)).pipe(
@@ -284,17 +318,7 @@ export const createContext = Effect.gen(function* () {
                 if (Option.isSome(pm)) {
                     return Option.getOrThrow(pm);
                 }
-                const { result } = yield* Effect.promise(() =>
-                    enquirer.prompt<{
-                        result: PM;
-                    }>({
-                        type: 'select',
-                        name: 'pm',
-                        message: 'Select package manager',
-                        choices: ['npm', 'yarn', 'pnpm'],
-                    }),
-                );
-                return result;
+                return yield* selectPM;
             }),
         ),
     );
