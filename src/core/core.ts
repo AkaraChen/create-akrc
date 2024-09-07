@@ -97,7 +97,9 @@ export class Context {
                             }
                             const version = dep.version
                                 ? dep.version
-                                : yield* getLatestVersion(name);
+                                : yield* getLatestVersion(name).pipe(
+                                      Effect.catchAll(Effect.die),
+                                  );
                             pkg[field] = {
                                 ...pkg[field],
                                 [name]: version,

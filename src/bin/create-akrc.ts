@@ -6,7 +6,6 @@ import {
 } from '@effect/platform-node';
 import { Effect, Layer } from 'effect';
 import { createContext } from '../core/core';
-import { ParserError, ZodValidationError } from '../errors/schema';
 import { exec } from '../lifecycle/exec';
 import { init } from '../lifecycle/init';
 import { teardown } from '../lifecycle/teardown';
@@ -22,18 +21,7 @@ const program = Effect.gen(function* () {
     // @ts-ignore
     const result = yield* exec(context, tasks);
     yield* teardown(context, result);
-}).pipe(
-    Effect.provide(Live),
-    Effect.catchIf(
-        (e): e is ParserError => e instanceof ParserError,
-        Effect.logFatal,
-    ),
-    Effect.catchIf(
-        (e): e is ZodValidationError => e instanceof ZodValidationError,
-        Effect.logFatal,
-    ),
-    Effect.catchAll(Effect.logFatal),
-);
+}).pipe(Effect.provide(Live), Effect.catchAll(Effect.logFatal));
 
 const runnable = Effect.scoped(program);
 
