@@ -16,6 +16,7 @@ export const storybook: IFeature = {
     setup(ctx) {
         return Effect.gen(function* () {
             const exec = yield* CommandExecutor.CommandExecutor;
+            yield* Effect.log('Initializing storybook');
             const process = yield* exec.start(
                 ctx.makeCommand(
                     commands.dlx.concat(ctx.pm, {

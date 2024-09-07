@@ -24,6 +24,7 @@ export const yarnStable: IFeature<{
         const { nodeLinker } = options;
         return Effect.gen(function* () {
             const exec = yield* CommandExecutor.CommandExecutor;
+            yield* Effect.log('Setting yarn to stable');
             const process = yield* exec.start(
                 ctx.makeCommand(['yarn', 'set', 'version', 'stable']),
             );

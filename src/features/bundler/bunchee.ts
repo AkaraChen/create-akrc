@@ -11,6 +11,7 @@ export const bunchee: IFeature = {
             yield* switchToModule(ctx);
             const exec = yield* CommandExecutor.CommandExecutor;
             yield* ctx.addDeps({ name: 'bunchee' });
+            yield* Effect.log('Preparing bunchee');
             const process = yield* exec.start(
                 ctx.makeCommand(
                     commands.dlx.concat(ctx.pm, {

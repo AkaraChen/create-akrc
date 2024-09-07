@@ -20,6 +20,7 @@ export const jest: IFeature = {
             );
             yield* ctx.addScripts(scripts);
             const exec = yield* CommandExecutor.CommandExecutor;
+            yield* Effect.log('Initializing jest');
             const process = yield* exec.start(
                 ctx.makeCommand(
                     commands.dlx.concat(ctx.pm, {

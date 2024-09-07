@@ -15,6 +15,7 @@ export const tailwind: IFeature = {
                 { name: 'postcss' },
             );
             const exec = yield* CommandExecutor.CommandExecutor;
+            yield* Effect.log('Initializing tailwind');
             const process = yield* exec.start(
                 ctx.makeCommand(
                     commands.dlx.concat(ctx.pm, {

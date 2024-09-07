@@ -12,6 +12,7 @@ export const knip: IFeature = {
     setup(ctx) {
         return Effect.gen(function* () {
             const exec = yield* CommandExecutor.CommandExecutor;
+            yield* Effect.log('Initializing knip');
             const process = yield* exec.start(
                 ctx.makeCommand(
                     commands.create.concat(ctx.pm, {
