@@ -1,6 +1,6 @@
+import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 import type { IFeature } from '../type';
-import { FileSystem } from '@effect/platform';
 
 const configFiles = ['vitest.{workspace,projects}.{json,ts,js}'];
 const deps = ['vitest'];

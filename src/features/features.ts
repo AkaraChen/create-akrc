@@ -4,6 +4,7 @@ import { tsup } from './bundler/tsup';
 import { typedoc } from './documention/typedoc';
 import { vitepress } from './documention/vitepress';
 import { biome } from './quality/biome';
+import { husky } from './quality/husky';
 import { knip } from './quality/knip';
 import { lefthook } from './quality/lefthook';
 import { lintStaged } from './quality/lint-staged';
@@ -46,4 +47,5 @@ export const features = [
     turbo,
     vitestWorkspace,
     lintStaged,
+    husky,
 ];
