@@ -1,9 +1,9 @@
 import * as yaml from '@akrc/yaml';
 import { FileSystem } from '@effect/platform';
+import { isPlatformError } from '@effect/platform/Error';
 import { Effect } from 'effect';
 import Enquirer from 'enquirer';
 import type { IFeature } from '../type';
-import { isPlatformError } from '@effect/platform/Error';
 
 const dirs = ['packages', 'apps'];
 

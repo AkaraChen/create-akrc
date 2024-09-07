@@ -32,6 +32,9 @@ importers:
       handlebars:
         specifier: ^4.7.8
         version: 4.7.8
+      knitwork:
+        specifier: ^1.1.0
+        version: 1.1.0
       latest-version:
         specifier: ^9.0.0
         version: 9.0.0
@@ -914,6 +917,9 @@ packages:
     peerDependencies:
       '@types/node': '>=18'
       typescript: '>=5.0.4'
+
+  knitwork@1.1.0:
+    resolution: {integrity: sha512-oHnmiBUVHz1V+URE77PNot2lv3QiYU2zQf1JjOVkMt3YDKGbu8NAFr+c4mcNOhdsGrB/VpVbRwPwhiXrPhxQbw==}
 
   ky@1.7.2:
     resolution: {integrity: sha512-OzIvbHKKDpi60TnF9t7UUVAF1B4mcqc02z5PIvrm08Wyb+yOcz63GRvEuVxNT18a9E1SrNouhB4W2NNLeD7Ykg==}
@@ -2106,6 +2112,8 @@ snapshots:
       typescript: 5.5.4
       zod: 3.23.8
       zod-validation-error: 3.3.1(zod@3.23.8)
+
+  knitwork@1.1.0: {}
 
   ky@1.7.2: {}
 

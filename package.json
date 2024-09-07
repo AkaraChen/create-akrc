@@ -4,10 +4,10 @@
     "description": "",
     "type": "module",
     "scripts": {
-        "build": "bunchee",
-        "dev": "bunchee --watch",
         "check": "biome check . --write",
-        "knip": "knip"
+        "knip": "knip",
+        "build": "bunchee",
+        "dev": "bunchee --watch"
     },
     "keywords": [],
     "author": "",
@@ -25,10 +25,7 @@
         "type-fest": "^4.26.0",
         "typescript": "^5.5.4"
     },
-    "files": [
-        "dist",
-        "src/templates"
-    ],
+    "files": ["dist", "src/templates"],
     "bin": {
         "create-akrc": "./dist/bin/create-akrc.js"
     },
@@ -41,6 +38,7 @@
         "enquirer": "^2.4.1",
         "fnpm-toolkit": "^1.10.0",
         "handlebars": "^4.7.8",
+        "knitwork": "^1.1.0",
         "latest-version": "^9.0.0",
         "pkg-dir": "^8.0.0",
         "pm-combo": "^1.9.1",
