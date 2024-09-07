@@ -6,6 +6,7 @@ import { vitepress } from './documention/vitepress';
 import { biome } from './quality/biome';
 import { knip } from './quality/knip';
 import { lefthook } from './quality/lefthook';
+import { lintStaged } from './quality/lint-staged';
 import { prettier } from './quality/prettier';
 import { skott } from './quality/skott';
 import { syncpack } from './quality/syncpack';
@@ -44,4 +45,5 @@ export const features = [
     cypress,
     turbo,
     vitestWorkspace,
+    lintStaged,
 ];
