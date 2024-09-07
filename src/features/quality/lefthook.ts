@@ -1,5 +1,6 @@
-import { FileSystem } from '@effect/platform';
-import { Effect } from 'effect';
+import { Command, CommandExecutor, FileSystem } from '@effect/platform';
+import { Effect, pipe } from 'effect';
+import { commands } from 'pm-combo';
 import type { IFeature } from '../type';
 
 const configFiles = [
@@ -33,6 +34,19 @@ export const lefthook: IFeature = {
     },
     teardown(ctx) {
         return Effect.gen(function* () {
+            const exec = yield* CommandExecutor.CommandExecutor;
+            yield* Effect.log('Uninstalling lefthook');
+            const process = yield* exec.start(
+                pipe(
+                    ctx.makeCommand(
+                        commands.dlx.concat(ctx.pm, {
+                            package: 'lefthook',
+                            args: ['uninstall'],
+                        }),
+                    ),
+                ),
+            );
+            yield* process.exitCode;
             yield* ctx.removeDeps('lefthook');
             yield* ctx.removeScripts(scripts);
             const fs = yield* FileSystem.FileSystem;
