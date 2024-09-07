@@ -31,7 +31,12 @@ export class Context {
                 catch: () => new ParserError(path),
             });
             return json;
-        });
+        }).pipe(
+            Effect.catchIf(
+                (err): err is ParserError => err instanceof ParserError,
+                () => Effect.die(new Error(`Failed to parse JSON in ${path}`)),
+            ),
+        );
     }
 
     writeJson<T>(path: string, json: T | string) {
@@ -196,7 +201,7 @@ export class Context {
             );
             const content = yield* fs
                 .readFile(filePath)
-                .pipe(Effect.andThen(decoder.decode));
+                .pipe(Effect.andThen((content) => decoder.decode(content)));
             return Handlebars.compile(content);
         });
     }

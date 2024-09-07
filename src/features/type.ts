@@ -6,7 +6,6 @@ import type {
 } from '@effect/platform';
 import type { Effect, Scope } from 'effect';
 import type { Context } from '../core/core';
-import type { ParserError, ZodValidationError } from '../errors/schema';
 
 export type Mode = 'setup' | 'teardown';
 
@@ -16,7 +15,7 @@ export interface ILifecycle {
 
 type Task<T> = Effect.Effect<
     T,
-    ParserError | ZodValidationError | PlatformError.PlatformError,
+    PlatformError.PlatformError,
     | CommandExecutor.CommandExecutor
     | Scope.Scope
     | FileSystem.FileSystem
@@ -26,9 +25,7 @@ type Task<T> = Effect.Effect<
 export interface IFeature<T = null> {
     name: string;
     options?: Effect.Effect<T>;
-    // biome-ignore lint/suspicious/noConfusingVoidType: <explanation>
     setup(ctx: Context, options: T): Task<ILifecycle | void>;
     detect(ctx: Context): Task<boolean>;
-    // biome-ignore lint/suspicious/noConfusingVoidType: <explanation>
     teardown?(ctx: Context): Task<ILifecycle | void>;
 }

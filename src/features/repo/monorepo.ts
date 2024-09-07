@@ -3,6 +3,7 @@ import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 import Enquirer from 'enquirer';
 import type { IFeature } from '../type';
+import { isPlatformError } from '@effect/platform/Error';
 
 const dirs = ['packages', 'apps'];
 
@@ -27,7 +28,13 @@ export const monorepo: IFeature<{
             yield* Effect.forEach(dirs, (dir) =>
                 Effect.gen(function* () {
                     const path = yield* ctx.join(dir);
-                    yield* fs.makeDirectory(path);
+                    yield* fs
+                        .makeDirectory(path)
+                        .pipe(
+                            Effect.catchIf(isPlatformError, () =>
+                                Effect.log(`Directory ${dir} already exists`),
+                            ),
+                        );
                 }),
             );
             if (ctx.pm === 'pnpm') {
