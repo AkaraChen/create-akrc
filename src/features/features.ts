@@ -1,4 +1,5 @@
 import { bunchee } from './bundler/bunchee';
+import { rslib } from './bundler/rslib';
 import { tsup } from './bundler/tsup';
 import { biome } from './quality/biome';
 import { knip } from './quality/knip';
@@ -26,4 +27,5 @@ export const features = [
     knip,
     yarnStable,
     syncpack,
+    rslib,
 ];
