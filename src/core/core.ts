@@ -1,7 +1,7 @@
-import { type PM, detectPM, findRepoRoot } from '@akrc/monorepo-tools';
+import { type PM, detectPM } from '@akrc/monorepo-tools';
 import { Command, Path } from '@effect/platform';
 import { FileSystem } from '@effect/platform';
-import { Effect, pipe } from 'effect';
+import { Effect, Option, pipe } from 'effect';
 import enquirer from 'enquirer';
 import { getDep } from 'fnpm-toolkit';
 import Handlebars from 'handlebars';
@@ -272,20 +272,32 @@ export class Context {
 
 export const createContext = Effect.gen(function* () {
     const cwd = process.cwd();
-    const root = yield* Effect.tryPromise(() => findRepoRoot(cwd));
-    const pm = yield* Effect.tryPromise(async () =>
-        detectPM(root).unwrapOr(
-            await enquirer
-                .prompt<{
-                    pm: PM;
-                }>({
-                    type: 'select',
-                    name: 'pm',
-                    message: 'Select package manager',
-                    choices: ['npm', 'yarn', 'pnpm'] as PM[],
-                })
-                .then((res) => res.pm),
+    const root = yield* Effect.promise(() => packageDirectory({ cwd }));
+    if (!root) {
+        // TODO: create a new package.json
+        yield* Effect.die(new Error('Cannot find package directory'));
+    }
+    const pm = yield* Effect.tryPromise(async () => detectPM(root!)).pipe(
+        Effect.map((pm) => Option.fromNullable(pm.value as PM)),
+        Effect.andThen((pm) =>
+            Effect.gen(function* () {
+                if (Option.isSome(pm)) {
+                    return Option.getOrThrow(pm);
+                }
+                const { result } = yield* Effect.promise(() =>
+                    enquirer.prompt<{
+                        result: PM;
+                    }>({
+                        type: 'select',
+                        name: 'pm',
+                        message: 'Select package manager',
+                        choices: ['npm', 'yarn', 'pnpm'],
+                    }),
+                );
+                return result;
+            }),
         ),
     );
-    return new Context(root, pm);
+    yield* Effect.log(`Using ${pm} as package manager`);
+    return new Context(root!, pm);
 });
