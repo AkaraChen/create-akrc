@@ -116,15 +116,33 @@ export class Context {
     addScripts(scripts: Record<string, string>) {
         return pipe(
             Effect.log(`Add scripts: ${Object.keys(scripts).join(', ')}`),
-            Effect.andThen(
-                this.updateJson<PackageJson>('package.json', async (pkg) => {
-                    pkg.scripts = {
-                        ...pkg.scripts,
-                        ...scripts,
-                    };
+            Effect.andThen(this.package),
+            Effect.andThen((pkg) =>
+                Effect.gen(function* () {
+                    for (const [name, script] of Object.entries(scripts)) {
+                        if (pkg.scripts?.[name]) {
+                            const { confirmed } = yield* Effect.promise<{
+                                confirmed: boolean;
+                            }>(() =>
+                                enquirer.prompt({
+                                    type: 'confirm',
+                                    name: 'confirmed',
+                                    message: `Script ${name} already exists. Do you want to overwrite it?`,
+                                }),
+                            );
+                            if (!confirmed) {
+                                continue;
+                            }
+                        }
+                        pkg.scripts = {
+                            ...pkg.scripts,
+                            [name]: script,
+                        };
+                    }
                     return pkg;
                 }),
             ),
+            Effect.andThen((pkg) => this.writeJson('package.json', pkg)),
         );
     }
 

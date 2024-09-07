@@ -1,4 +1,4 @@
-import { Command, CommandExecutor, FileSystem } from '@effect/platform';
+import { CommandExecutor, FileSystem } from '@effect/platform';
 import { Effect, pipe } from 'effect';
 import { commands } from 'pm-combo';
 import type { IFeature } from '../type';
