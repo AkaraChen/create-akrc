@@ -11,6 +11,7 @@ import { skott } from './quality/skott';
 import { syncpack } from './quality/syncpack';
 import { tsconfig } from './quality/tsconfig';
 import { monorepo } from './repo/monorepo';
+import { turbo } from './repo/turbo';
 import { yarnStable } from './repo/yarn-stable';
 import { cypress } from './testing/cypress';
 import { jest } from './testing/jest';
@@ -40,4 +41,5 @@ export const features = [
     tsconfig,
     playwright,
     cypress,
+    turbo,
 ];

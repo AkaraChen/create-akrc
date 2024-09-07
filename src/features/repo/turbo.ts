@@ -2,27 +2,28 @@ import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 import type { IFeature } from '../type';
 
-const deps = ['cypress'];
-const scripts = {
-    'cy:open': 'cypress open',
-};
-const configFiles = ['cypress.json', 'cypress.config.js', 'cypress.config.ts'];
+const configFiles = ['turbo.json', '**/turbo.json'];
+const deps = ['turbo'];
 
-export const cypress: IFeature = {
-    name: 'cypress',
+export const turbo: IFeature = {
+    name: 'turbo',
     setup(ctx) {
         return Effect.gen(function* () {
             yield* ctx.addDeps(...deps);
-            yield* ctx.addScripts(scripts);
+            const fs = yield* FileSystem.FileSystem;
+            const template = yield* ctx.template('turbo');
+            const content = ctx.encoder.encode(template(null));
+            yield* fs.writeFile(yield* ctx.join('turbo.json'), content);
         });
     },
     detect(ctx) {
-        return ctx.hasDep('cypress');
+        return ctx
+            .glob(configFiles)
+            .pipe(Effect.map((files) => files.length > 0));
     },
     teardown(ctx) {
         return Effect.gen(function* () {
             yield* ctx.removeDeps(...deps);
-            yield* ctx.removeScripts(scripts);
             const fs = yield* FileSystem.FileSystem;
             const files = yield* ctx.glob(configFiles);
             yield* Effect.forEach(files, (file) => fs.remove(file));
