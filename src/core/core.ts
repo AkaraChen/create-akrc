@@ -238,6 +238,33 @@ export class Context {
 
     encoder = encoder;
     decoder = decoder;
+
+    addGitignore(label: string, patterns: string[]) {
+        return pipe(
+            Effect.log(`Add ${label} to .gitignore`),
+            Effect.andThen(this.join('.gitignore')),
+            Effect.andThen((filePath) => {
+                return Effect.gen(function* () {
+                    const fs = yield* FileSystem.FileSystem;
+                    const content = `# ${label}\n${patterns.join('\n')}\n`;
+                    const exists = yield* fs.exists(filePath);
+                    if (!exists) {
+                        yield* fs.writeFile(filePath, encoder.encode(content));
+                        return;
+                    }
+                    const oldContent = yield* fs
+                        .readFile(filePath)
+                        .pipe(
+                            Effect.andThen((content) =>
+                                decoder.decode(content),
+                            ),
+                        );
+                    const newContent = `${oldContent}\n${content}`;
+                    yield* fs.writeFile(filePath, encoder.encode(newContent));
+                });
+            }),
+        );
+    }
 }
 
 export const createContext = Effect.gen(function* () {

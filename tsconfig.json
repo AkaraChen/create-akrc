@@ -1,6 +1,7 @@
 {
     "extends": "@akrc/tsconfig/node.json",
     "compilerOptions": {
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "lib": ["esnext"]
     }
 }

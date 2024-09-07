@@ -1,6 +1,7 @@
 import { bunchee } from './bundler/bunchee';
 import { rslib } from './bundler/rslib';
 import { tsup } from './bundler/tsup';
+import { vitepress } from './documention/vitepress';
 import { biome } from './quality/biome';
 import { knip } from './quality/knip';
 import { lefthook } from './quality/lefthook';
@@ -28,4 +29,5 @@ export const features = [
     yarnStable,
     syncpack,
     rslib,
+    vitepress,
 ];
