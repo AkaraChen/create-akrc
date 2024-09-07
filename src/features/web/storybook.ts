@@ -1,5 +1,5 @@
-import { CommandExecutor, FileSystem } from '@effect/platform';
-import { Effect } from 'effect';
+import { Command, CommandExecutor, FileSystem } from '@effect/platform';
+import { Effect, pipe } from 'effect';
 import { commands } from 'pm-combo';
 import type { IFeature } from '../type';
 
@@ -18,11 +18,16 @@ export const storybook: IFeature = {
             const exec = yield* CommandExecutor.CommandExecutor;
             yield* Effect.log('Initializing storybook');
             const process = yield* exec.start(
-                ctx.makeCommand(
-                    commands.dlx.concat(ctx.pm, {
-                        package: 'storybook@latest',
-                        args: ['init'],
-                    }),
+                pipe(
+                    ctx.makeCommand(
+                        commands.dlx.concat(ctx.pm, {
+                            package: 'storybook@latest',
+                            args: ['init'],
+                        }),
+                    ),
+                    Command.stdin('inherit'),
+                    Command.stderr('inherit'),
+                    Command.stdout('inherit'),
                 ),
             );
             yield* process.exitCode;
