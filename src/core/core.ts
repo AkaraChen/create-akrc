@@ -15,6 +15,12 @@ import { getLatestVersion } from './npm';
 const decoder = new TextDecoder();
 const encoder = new TextEncoder();
 
+type DepInput = {
+    name: string;
+    version?: string;
+    field?: 'dependencies' | 'devDependencies';
+};
+
 export class Context {
     constructor(
         public readonly root: string,
@@ -75,13 +81,10 @@ export class Context {
         );
     }
 
-    addDeps(
-        ...deps: Array<{
-            name: string;
-            version?: string;
-            field?: 'dependencies' | 'devDependencies';
-        }>
-    ) {
+    addDeps(...inputDeps: Array<DepInput | string>) {
+        const deps = inputDeps.map((dep) =>
+            typeof dep === 'string' ? { name: dep } : dep,
+        );
         return pipe(
             Effect.log(
                 `Add dependencies: ${deps.map((dep) => dep.name).join(', ')}`,

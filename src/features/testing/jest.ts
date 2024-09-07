@@ -13,11 +13,7 @@ export const jest: IFeature = {
     name: 'jest',
     setup(ctx) {
         return Effect.gen(function* () {
-            yield* ctx.addDeps(
-                ...['jest', 'typescript', 'ts-jest', '@types/jest'].map(
-                    (dep) => ({ name: dep }),
-                ),
-            );
+            yield* ctx.addDeps('jest', 'typescript', 'ts-jest', '@types/jest');
             yield* ctx.addScripts(scripts);
             const exec = yield* CommandExecutor.CommandExecutor;
             yield* Effect.log('Initializing jest');
