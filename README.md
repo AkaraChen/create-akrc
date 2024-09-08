@@ -39,3 +39,5 @@ Now supports generating config for:
 21. [turbo](https://turbo.build/repo/docs)
 22. [lint-staged](https://github.com/lint-staged/lint-staged)
 23. [husky](https://typicode.github.io/husky/)
+24. [eslint-v9](https://eslint.org/)
+25. [editorconfig](https://editorconfig.org/)
