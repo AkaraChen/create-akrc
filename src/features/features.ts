@@ -5,6 +5,7 @@ import { typedoc } from './documention/typedoc';
 import { vitepress } from './documention/vitepress';
 import { biome } from './quality/biome';
 import { editorconfig } from './quality/editorconfig';
+import { eslintv9 } from './quality/eslintv9';
 import { husky } from './quality/husky';
 import { knip } from './quality/knip';
 import { lefthook } from './quality/lefthook';
@@ -50,4 +51,5 @@ export const features = [
     lintStaged,
     husky,
     editorconfig,
+    eslintv9,
 ];
