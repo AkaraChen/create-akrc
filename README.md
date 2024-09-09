@@ -41,3 +41,4 @@ Now supports generating config for:
 23. [husky](https://typicode.github.io/husky/)
 24. [eslint-v9](https://eslint.org/)
 25. [editorconfig](https://editorconfig.org/)
+26. [dprint](https://dprint.dev/)
