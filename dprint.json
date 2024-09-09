@@ -1,0 +1,8 @@
+{
+    "$schema": "https://dprint.dev/schemas/v0.json",
+    "extends": [
+        "https://cdn.jsdelivr.net/npm/@akrc/dprint-config@0.0.0/src/web.json",
+        "https://cdn.jsdelivr.net/npm/@akrc/dprint-config@0.0.0/src/markdown.json",
+        "https://cdn.jsdelivr.net/npm/@akrc/dprint-config@0.0.0/src/config.json"
+    ]
+}

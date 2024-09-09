@@ -7,7 +7,8 @@
         "check": "biome check . --write",
         "knip": "knip",
         "build": "bunchee",
-        "dev": "bunchee --watch"
+        "dev": "bunchee --watch",
+        "fmt": "dprint fmt"
     },
     "keywords": [],
     "author": "",
@@ -23,7 +24,8 @@
         "bunchee": "^5.3.2",
         "knip": "^5.29.2",
         "type-fest": "^4.26.0",
-        "typescript": "^5.5.4"
+        "typescript": "^5.5.4",
+        "dprint": "0.47.2"
     },
     "files": ["dist", "src/templates"],
     "bin": {
