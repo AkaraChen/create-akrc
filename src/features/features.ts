@@ -4,6 +4,7 @@ import { tsup } from './bundler/tsup';
 import { typedoc } from './documention/typedoc';
 import { vitepress } from './documention/vitepress';
 import { biome } from './quality/biome';
+import { dprint } from './quality/dprint';
 import { editorconfig } from './quality/editorconfig';
 import { eslintv9 } from './quality/eslintv9';
 import { husky } from './quality/husky';
@@ -52,4 +53,5 @@ export const features = [
     husky,
     editorconfig,
     eslintv9,
+    dprint,
 ];
