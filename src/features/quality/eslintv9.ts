@@ -4,7 +4,7 @@ import enquirer from 'enquirer';
 import { genImport } from 'knitwork';
 import type { IFeature } from '../type';
 
-type PresetName = 'antfu' | 'sxzz';
+type PresetName = 'antfu' | 'sxzz' | 'akrc';
 interface Preset {
     imports: Array<{
         specifier: string;
@@ -36,6 +36,16 @@ const presets: Record<PresetName, Preset> = {
         deps: ['@sxzz/eslint-config'],
         exportSpecifier: 'sxzz()',
     },
+    akrc: {
+        imports: [
+            {
+                specifier: 'akrc',
+                source: '@akrc/eslint-config',
+            }
+        ],
+        deps: ['@akrc/eslint-config'],
+        exportSpecifier: 'akrc()',
+    }
 };
 const sharedDeps = ['eslint'];
 const configFiles = ['eslint.config.{cjs,js,mjs,ts,mts,cts}'];
