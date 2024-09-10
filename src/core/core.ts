@@ -1,6 +1,5 @@
 import { type PM, detectPM } from '@akrc/monorepo-tools';
-import { Command, CommandExecutor, Path } from '@effect/platform';
-import { FileSystem } from '@effect/platform';
+import { Command, CommandExecutor, Path, FileSystem } from '@effect/platform';
 import { Effect, Option, pipe } from 'effect';
 import enquirer from 'enquirer';
 import { getDep } from 'fnpm-toolkit';

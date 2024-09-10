@@ -41,11 +41,11 @@ const presets: Record<PresetName, Preset> = {
             {
                 specifier: 'akrc',
                 source: '@akrc/eslint-config',
-            }
+            },
         ],
         deps: ['@akrc/eslint-config'],
         exportSpecifier: 'akrc()',
-    }
+    },
 };
 const sharedDeps = ['eslint'];
 const configFiles = ['eslint.config.{cjs,js,mjs,ts,mts,cts}'];
