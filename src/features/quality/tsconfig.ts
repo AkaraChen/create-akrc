@@ -4,7 +4,7 @@ import enquirer from 'enquirer';
 import type { IFeature } from '../type';
 
 const configFiles = ['tsconfig.json', 'tsconfig.**.json'];
-const deps = ['typescript'];
+const deps = ['typescript', '@akrc/tsconfig'];
 const scripts = {
     typecheck: 'tsc --noEmit',
 };
