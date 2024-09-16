@@ -10,7 +10,7 @@ import { omit } from 'radash';
 import { glob } from 'tinyglobby';
 import type { PackageJson } from 'type-fest';
 import { ParserError } from '../errors/schema';
-import { getLatestVersion } from './npm';
+import { getLatestVersion } from './utils';
 
 const decoder = new TextDecoder();
 const encoder = new TextEncoder();
@@ -96,6 +96,9 @@ export class Context {
                         return Effect.gen(function* () {
                             const { name, field = 'devDependencies' } = dep;
                             if (getDep(pkg, name)) {
+                                yield* Effect.log(
+                                    `Dependency ${name} already exists, skippping`,
+                                );
                                 return;
                             }
                             const version = dep.version
@@ -155,14 +158,10 @@ export class Context {
             Effect.andThen(
                 this.updateJson<PackageJson>('package.json', async (pkg) => {
                     for (const dep of deps) {
-                        if (pkg.dependencies) {
-                            pkg.dependencies = omit(pkg.dependencies, [dep]);
-                        }
-                        if (pkg.devDependencies) {
-                            pkg.devDependencies = omit(pkg.devDependencies, [
-                                dep,
-                            ]);
-                        }
+                        pkg.dependencies &&= omit(pkg.dependencies, [dep]);
+                        pkg.devDependencies &&= omit(pkg.devDependencies, [
+                            dep,
+                        ]);
                     }
                     return pkg;
                 }),
@@ -172,19 +171,22 @@ export class Context {
 
     removeScripts(scripts: Record<string, string>) {
         return pipe(
-            Effect.andThen(
-                Effect.log(
-                    `Remove scripts: ${Object.keys(scripts).join(', ')}`,
-                ),
-                this.updateJson<PackageJson>('package.json', async (pkg) => {
+            Effect.log(`Remove scripts: ${Object.keys(scripts).join(', ')}`),
+            Effect.andThen(this.package),
+            Effect.andThen((pkg) => {
+                return Effect.gen(function* () {
                     for (const script of Object.keys(scripts)) {
                         if (pkg.scripts?.[script] === scripts[script]) {
                             pkg.scripts = omit(pkg.scripts!, [script]);
+                        } else {
+                            yield* Effect.log(
+                                `Script ${script} has manually modified, skipping`,
+                            );
                         }
+                        return pkg;
                     }
-                    return pkg;
-                }),
-            ),
+                });
+            }),
         );
     }
 
@@ -310,7 +312,7 @@ export const createContext = Effect.gen(function* () {
         }
         yield* Effect.die(new Error('Cannot find package directory'));
     }
-    const pm = yield* Effect.tryPromise(async () => detectPM(root!)).pipe(
+    const pm = yield* Effect.try(() => detectPM(root!)).pipe(
         Effect.map((pm) => Option.fromNullable(pm.value as PM)),
         Effect.andThen((pm) =>
             Effect.gen(function* () {

@@ -3,7 +3,7 @@ import { Effect } from 'effect';
 import enquirer from 'enquirer';
 import { genArrayFromRaw, genString } from 'knitwork';
 import { PackageNotFoundError, VersionNotFoundError } from 'latest-version';
-import { getLatestVersion } from '../../core/npm';
+import { getLatestVersion } from '../../core/utils';
 import type { IFeature } from '../type';
 
 const configFiles = ['dprint.json'];
