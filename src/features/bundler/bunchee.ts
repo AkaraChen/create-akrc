@@ -4,6 +4,11 @@ import { commands } from 'pm-combo';
 import type { IFeature } from '../type';
 import { switchToModule } from './utils';
 
+const scripts = {
+    build: 'bunchee',
+    dev: 'bunchee --watch',
+};
+
 export const bunchee: IFeature = {
     name: 'bunchee',
     setup(ctx) {
@@ -21,6 +26,7 @@ export const bunchee: IFeature = {
                 ),
             );
             yield* process.exitCode;
+            yield* ctx.addScripts(scripts);
         });
     },
     detect(ctx) {
@@ -29,6 +35,7 @@ export const bunchee: IFeature = {
     teardown(ctx) {
         return Effect.gen(function* () {
             yield* ctx.removeDeps('bunchee');
+            yield* ctx.removeScripts(scripts);
         });
     },
 };
