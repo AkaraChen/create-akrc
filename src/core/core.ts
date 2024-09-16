@@ -187,6 +187,7 @@ export class Context {
                     }
                 });
             }),
+            Effect.andThen((pkg) => this.updatePackage(async () => pkg as PackageJson)),
         );
     }
 
