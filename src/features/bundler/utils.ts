@@ -1,7 +1,7 @@
+import type { Context } from '@/core/core';
 import { Effect, Option } from 'effect';
 import enquirer from 'enquirer';
 import { tryFile } from 'try-files';
-import type { Context } from '../../core/core';
 
 export const entryDetect = (root: string) => {
     return Effect.sync(() =>

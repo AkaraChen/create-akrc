@@ -1,5 +1,5 @@
+import type { IFeature } from '@/features/type';
 import { Effect } from 'effect';
-import type { IFeature } from '../type';
 
 const deps = ['typedoc', 'typedoc-material-theme'];
 

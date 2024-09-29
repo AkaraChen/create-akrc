@@ -1,6 +1,6 @@
+import type { IFeature } from '@/features/type';
 import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
-import type { IFeature } from '../type';
 
 const deps = ['syncpack'];
 const scripts = {

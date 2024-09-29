@@ -1,7 +1,7 @@
+import type { IFeature } from '@/features/type';
 import { FileSystem, Path } from '@effect/platform';
 import { Effect, Option } from 'effect';
 import { genArrayFromRaw, genString } from 'knitwork';
-import type { IFeature } from '../type';
 import { entryDetect, switchToModule } from './utils';
 
 const configFiles = ['tsup.config.ts', 'tsup.config.js', 'tsup.config.cjs'];

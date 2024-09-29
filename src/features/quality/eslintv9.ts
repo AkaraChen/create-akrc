@@ -1,8 +1,8 @@
+import type { IFeature } from '@/features/type';
 import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 import enquirer from 'enquirer';
 import { genImport } from 'knitwork';
-import type { IFeature } from '../type';
 
 type PresetName = 'antfu' | 'sxzz' | 'akrc';
 interface Preset {

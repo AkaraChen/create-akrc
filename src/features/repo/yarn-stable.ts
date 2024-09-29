@@ -1,7 +1,7 @@
+import type { IFeature } from '@/features/type';
 import { CommandExecutor, FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 import enquirer from 'enquirer';
-import type { IFeature } from '../type';
 
 type NodeLinker = 'node-modules' | 'pnp' | 'pnpm';
 const nodeLinkers = ['node-modules', 'pnp', 'pnpm'] as NodeLinker[];

@@ -1,8 +1,8 @@
+import type { Context } from '@/core/core';
+import { features } from '@/features/features';
+import type { Mode } from '@/features/type';
 import { Effect } from 'effect';
 import enquirer from 'enquirer';
-import type { Context } from '../core/core';
-import { features } from '../features/features';
-import type { Mode } from '../features/type';
 
 export const init = (ctx: Context) => {
     return Effect.gen(function* () {

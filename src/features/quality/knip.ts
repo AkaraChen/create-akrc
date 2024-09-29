@@ -1,7 +1,7 @@
+import type { IFeature } from '@/features/type';
 import { CommandExecutor } from '@effect/platform';
 import { Effect } from 'effect';
 import { commands } from 'pm-combo';
-import type { IFeature } from '../type';
 
 const scripts = {
     knip: 'knip',

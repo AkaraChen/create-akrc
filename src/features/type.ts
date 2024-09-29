@@ -1,3 +1,4 @@
+import type { Context } from '@/core/core';
 import type {
     CommandExecutor,
     FileSystem,
@@ -5,7 +6,6 @@ import type {
     Error as PlatformError,
 } from '@effect/platform';
 import type { Effect, Scope } from 'effect';
-import type { Context } from '../core/core';
 
 export type Mode = 'setup' | 'teardown';
 

@@ -1,7 +1,7 @@
+import type { IFeature } from '@/features/type';
 import { CommandExecutor, FileSystem } from '@effect/platform';
 import { Effect, pipe } from 'effect';
 import { commands } from 'pm-combo';
-import type { IFeature } from '../type';
 
 const configFiles = [
     'lefthook.{yml,yaml,json,toml}',

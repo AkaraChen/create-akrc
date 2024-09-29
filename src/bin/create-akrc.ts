@@ -1,3 +1,7 @@
+import { createContext } from '@/core/core';
+import { exec } from '@/lifecycle/exec';
+import { init } from '@/lifecycle/init';
+import { teardown } from '@/lifecycle/teardown';
 import {
     NodeCommandExecutor,
     NodeFileSystem,
@@ -5,10 +9,6 @@ import {
     NodeRuntime,
 } from '@effect/platform-node';
 import { Effect, Layer } from 'effect';
-import { createContext } from '../core/core';
-import { exec } from '../lifecycle/exec';
-import { init } from '../lifecycle/init';
-import { teardown } from '../lifecycle/teardown';
 
 const Live = NodeCommandExecutor.layer.pipe(
     Layer.provideMerge(NodeFileSystem.layer),

@@ -1,8 +1,8 @@
+import type { Context } from '@/core/core';
+import type { ILifecycle } from '@/features/type';
 import { CommandExecutor } from '@effect/platform';
 import { Effect, pipe } from 'effect';
 import { commands } from 'pm-combo';
-import type { Context } from '../core/core';
-import type { ILifecycle } from '../features/type';
 
 export const teardown = (ctx: Context, result: ILifecycle[]) => {
     return Effect.gen(function* () {

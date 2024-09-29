@@ -1,7 +1,7 @@
+import type { IFeature } from '@/features/type';
 import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 import enquirer from 'enquirer';
-import type { IFeature } from '../type';
 
 const configFiles = ['tsconfig.json', 'tsconfig.**.json'];
 const deps = ['typescript', '@akrc/tsconfig'];

@@ -1,7 +1,7 @@
+import type { IFeature } from '@/features/type';
 import { Command, CommandExecutor, FileSystem } from '@effect/platform';
 import { Effect, pipe } from 'effect';
 import { commands } from 'pm-combo';
-import type { IFeature } from '../type';
 
 const configDir = 'docs/.vitepress';
 const deps = ['vitepress'];

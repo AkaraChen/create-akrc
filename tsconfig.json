@@ -2,6 +2,9 @@
     "extends": "@akrc/tsconfig/node.json",
     "compilerOptions": {
         "esModuleInterop": true,
-        "lib": ["esnext"]
+        "lib": ["esnext"],
+        "paths": {
+            "@/*": ["./src/*"]
+        }
     }
 }

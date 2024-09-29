@@ -1,6 +1,6 @@
+import type { Context } from '@/core/core';
+import type { IFeature, Mode } from '@/features/type';
 import { Effect } from 'effect';
-import type { Context } from '../core/core';
-import type { IFeature, Mode } from '../features/type';
 
 export const exec = <T>(
     ctx: Context,

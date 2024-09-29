@@ -1,3 +1,4 @@
+import { ParserError } from '@/errors/schema';
 import { type PM, detectPM } from '@akrc/monorepo-tools';
 import { Command, CommandExecutor, FileSystem, Path } from '@effect/platform';
 import { Effect, Option, pipe } from 'effect';
@@ -9,7 +10,6 @@ import { commands } from 'pm-combo';
 import { omit } from 'radash';
 import { glob } from 'tinyglobby';
 import type { PackageJson } from 'type-fest';
-import { ParserError } from '../errors/schema';
 import { getLatestVersion } from './utils';
 
 const decoder = new TextDecoder();
