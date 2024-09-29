@@ -1,23 +1,21 @@
 import type { Context } from '@/core/core';
+import { prompt } from '@/core/utils';
 import { FileSystem, Path } from '@effect/platform';
 import { Effect, Option } from 'effect';
 import { isNoSuchElementException } from 'effect/Cause';
-import enquirer from 'enquirer';
 import { tryFile } from 'try-files';
 
 const ext = ['ts', 'js'];
 const files = ['index', 'src/index'];
 const entries = ext.flatMap((lang) => files.map((file) => `${file}.${lang}`));
 
-export const createEntry = (root: string) =>
-    Effect.promise(() =>
-        enquirer.prompt<{ entry: string }>({
-            type: 'select',
-            name: 'entry',
-            message: 'Choose an entry file',
-            choices: entries,
-        }),
-    ).pipe(
+const createEntry = (root: string) =>
+    prompt<{ entry: string }>({
+        type: 'select',
+        name: 'entry',
+        message: 'Choose an entry file',
+        choices: entries,
+    }).pipe(
         Effect.map((answer) => answer.entry),
         Effect.tap((entry) =>
             Effect.gen(function* () {
@@ -30,7 +28,7 @@ export const createEntry = (root: string) =>
         ),
     );
 
-export const detectEntry = (root: string) => {
+const detectEntry = (root: string) => {
     return Effect.sync(() => tryFile(entries, { root })).pipe(
         Effect.map((entry) => Option.fromNullable(entry)),
     );
@@ -47,15 +45,13 @@ export const switchToModule = (ctx: Context) => {
     return Effect.gen(function* () {
         const json = yield* ctx.package;
         if (json.type || json.type === 'commonjs') return;
-        const { confirmed } = yield* Effect.promise(() =>
-            enquirer.prompt<{
-                confirmed: boolean;
-            }>({
-                type: 'confirm',
-                name: 'confirmed',
-                message: 'Switch to "type": "module" in package.json?',
-            }),
-        );
+        const { confirmed } = yield* prompt<{
+            confirmed: boolean;
+        }>({
+            type: 'confirm',
+            name: 'confirmed',
+            message: 'Switch to "type": "module" in package.json?',
+        });
         if (confirmed) {
             yield* ctx.updatePackage(async (json) => {
                 json.type = 'module';

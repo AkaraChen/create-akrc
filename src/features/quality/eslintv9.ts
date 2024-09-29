@@ -1,7 +1,7 @@
+import { prompt } from '@/core/utils';
 import type { IFeature } from '@/features/type';
 import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
-import enquirer from 'enquirer';
 import { genImport } from 'knitwork';
 
 type PresetName = 'antfu' | 'sxzz' | 'akrc';
@@ -58,14 +58,12 @@ export const eslintv9: IFeature<{
     preset: PresetName;
 }> = {
     name: 'eslintv9',
-    options: Effect.promise(() =>
-        enquirer.prompt<{ preset: PresetName }>({
-            type: 'select',
-            name: 'preset',
-            message: 'Choose a preset',
-            choices: Object.keys(presets),
-        }),
-    ),
+    options: prompt<{ preset: PresetName }>({
+        type: 'select',
+        name: 'preset',
+        message: 'Choose a preset',
+        choices: Object.keys(presets),
+    }),
     setup(ctx, options) {
         const preset = presets[options.preset];
         const deps = [...preset.deps, ...sharedDeps];

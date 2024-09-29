@@ -1,7 +1,7 @@
+import { prompt } from '@/core/utils';
 import type { IFeature } from '@/features/type';
 import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
-import enquirer from 'enquirer';
 
 const configFiles = {
     rcs: [
@@ -24,14 +24,12 @@ export const prettier: IFeature<{
     plugins: Array<Plugin>;
 }> = {
     name: 'prettier',
-    options: Effect.promise<{ plugins: Array<Plugin> }>(() =>
-        enquirer.prompt({
-            type: 'multiselect',
-            name: 'plugins',
-            message: 'Select plugins',
-            choices: plugins,
-        }),
-    ),
+    options: prompt<{ plugins: Array<Plugin> }>({
+        type: 'multiselect',
+        name: 'plugins',
+        message: 'Select plugins',
+        choices: plugins,
+    }),
     setup(ctx, options) {
         const { plugins } = options;
         return Effect.gen(function* () {

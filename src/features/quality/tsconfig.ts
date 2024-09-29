@@ -1,7 +1,7 @@
+import { prompt } from '@/core/utils';
 import type { IFeature } from '@/features/type';
 import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
-import enquirer from 'enquirer';
 
 const configFiles = ['tsconfig.json', 'tsconfig.**.json'];
 const deps = ['typescript', '@akrc/tsconfig'];
@@ -13,16 +13,14 @@ export const tsconfig: IFeature<{
     selected: string;
 }> = {
     name: 'tsconfig',
-    options: Effect.promise(() =>
-        enquirer.prompt<{
-            selected: string;
-        }>({
-            type: 'select',
-            name: 'selected',
-            message: 'Choose a tsconfig template',
-            choices: ['node', 'web', 'react', 'vue'],
-        }),
-    ),
+    options: prompt<{
+        selected: string;
+    }>({
+        type: 'select',
+        name: 'selected',
+        message: 'Choose a tsconfig template',
+        choices: ['node', 'web', 'react', 'vue'],
+    }),
     setup(ctx, options) {
         const { selected } = options;
         return Effect.gen(function* () {

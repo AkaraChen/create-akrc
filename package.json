@@ -19,16 +19,16 @@
         "access": "public"
     },
     "devDependencies": {
+        "@akrc/eslint-config": "0.0.0",
         "@akrc/tsconfig": "^1.1.0",
         "@biomejs/biome": "1.8.3",
         "@types/node": "^22.5.1",
         "bunchee": "^5.3.2",
         "dprint": "0.47.2",
+        "eslint": "9.10.0",
         "knip": "^5.29.2",
         "type-fest": "^4.26.0",
-        "typescript": "^5.5.4",
-        "@akrc/eslint-config": "0.0.0",
-        "eslint": "9.10.0"
+        "typescript": "^5.5.4"
     },
     "files": ["dist", "src/templates"],
     "bin": {
@@ -56,6 +56,9 @@
     "pnpm": {
         "overrides": {
             "is-core-module": "npm:@nolyfill/is-core-module@^1"
+        },
+        "patchedDependencies": {
+            "enquirer": "patches/enquirer.patch"
         }
     }
 }

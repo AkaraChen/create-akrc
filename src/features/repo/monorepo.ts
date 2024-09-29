@@ -1,9 +1,9 @@
+import { prompt } from '@/core/utils';
 import type { IFeature } from '@/features/type';
 import * as yaml from '@akrc/yaml';
 import { FileSystem } from '@effect/platform';
 import { isPlatformError } from '@effect/platform/Error';
 import { Effect } from 'effect';
-import Enquirer from 'enquirer';
 
 const dirs = ['packages', 'apps'];
 
@@ -11,16 +11,14 @@ export const monorepo: IFeature<{
     dirs: string[];
 }> = {
     name: 'monorepo',
-    options: Effect.promise(() =>
-        Enquirer.prompt<{
-            dirs: string[];
-        }>({
-            type: 'multiselect',
-            name: 'dirs',
-            message: 'Select directories for monorepo',
-            choices: dirs,
-        }),
-    ),
+    options: prompt<{
+        dirs: string[];
+    }>({
+        type: 'multiselect',
+        name: 'dirs',
+        message: 'Select directories for monorepo',
+        choices: dirs,
+    }),
     setup(ctx, options) {
         return Effect.gen(function* () {
             const fs = yield* FileSystem.FileSystem;

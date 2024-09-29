@@ -1,19 +1,17 @@
 import type { Context } from '@/core/core';
+import { prompt } from '@/core/utils';
 import { features } from '@/features/features';
-import type { Mode } from '@/features/type';
+import { type Mode, Order } from '@/features/type';
 import { Effect } from 'effect';
-import enquirer from 'enquirer';
 
 export const init = (ctx: Context) => {
     return Effect.gen(function* () {
-        const { mode } = yield* Effect.promise<{ mode: Mode }>(() =>
-            enquirer.prompt({
-                type: 'select',
-                name: 'mode',
-                message: 'Choose a mode',
-                choices: ['setup', 'teardown'] as Mode[],
-            }),
-        );
+        const { mode } = yield* prompt<{ mode: Mode }>({
+            type: 'select',
+            name: 'mode',
+            message: 'Choose a mode',
+            choices: ['setup', 'teardown'] as Mode[],
+        });
         const detection = yield* Effect.forEach(features, (feature) =>
             Effect.gen(function* () {
                 const detected = yield* feature.detect(ctx);
@@ -35,16 +33,14 @@ export const init = (ctx: Context) => {
             const nonEnabled = features
                 .filter((feature) => !detection.includes(feature.name))
                 .map((feature) => feature.name);
-            const selected = yield* Effect.promise(() =>
-                enquirer.prompt<{
-                    selected: string[];
-                }>({
-                    type: 'multiselect',
-                    name: 'selected',
-                    message: 'Select features to setup',
-                    choices: nonEnabled,
-                }),
-            ).pipe(
+            const selected = yield* prompt<{
+                selected: string[];
+            }>({
+                type: 'multiselect',
+                name: 'selected',
+                message: 'Select features to setup',
+                choices: nonEnabled,
+            }).pipe(
                 Effect.andThen((selected) =>
                     selected.selected.map((name) =>
                         features.find((feature) => feature.name === name),
@@ -58,16 +54,14 @@ export const init = (ctx: Context) => {
             };
         }
 
-        const selected = yield* Effect.promise(() =>
-            enquirer.prompt<{
-                features: string[];
-            }>({
-                type: 'multiselect',
-                name: 'features',
-                message: 'Select features to teardown',
-                choices: detection,
-            }),
-        ).pipe(
+        const selected = yield* prompt<{
+            features: string[];
+        }>({
+            type: 'multiselect',
+            name: 'features',
+            message: 'Select features to teardown',
+            choices: detection,
+        }).pipe(
             Effect.andThen((selected) =>
                 selected.features.map((name) =>
                     features.find((feature) => feature.name === name),
@@ -77,7 +71,7 @@ export const init = (ctx: Context) => {
         );
 
         const ordered = selected.sort(
-            (a, b) => (a.order ?? 2) - (b.order ?? 2),
+            (a, b) => (a.order ?? Order.Normal) - (b.order ?? Order.Normal),
         );
 
         return {

@@ -1,0 +1,13 @@
+diff --git a/index.d.ts b/index.d.ts
+index 8150fa482246b4133786043464b5dcbce69743a1..3d5ca4bd0d5382a0f78275f4bdabed7d6e47b5a5 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -88,7 +88,7 @@ interface SortPromptOptions extends BasePromptOptions {
+   numbered?: boolean
+ }
+ 
+-type PromptOptions =
++export type PromptOptions =
+   | BasePromptOptions
+   | ArrayPromptOptions
+   | BooleanPromptOptions

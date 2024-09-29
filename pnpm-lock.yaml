@@ -7,6 +7,11 @@ settings:
 overrides:
   is-core-module: npm:@nolyfill/is-core-module@^1
 
+patchedDependencies:
+  enquirer:
+    hash: 76rmasmsupffhqmx3qdesxex24
+    path: patches/enquirer.patch
+
 importers:
 
   .:
@@ -31,7 +36,7 @@ importers:
         version: 3.7.2
       enquirer:
         specifier: ^2.4.1
-        version: 2.4.1
+        version: 2.4.1(patch_hash=76rmasmsupffhqmx3qdesxex24)
       fnpm-toolkit:
         specifier: ^1.10.0
         version: 1.10.0
@@ -3564,7 +3569,7 @@ snapshots:
       graceful-fs: 4.2.11
       tapable: 2.2.1
 
-  enquirer@2.4.1:
+  enquirer@2.4.1(patch_hash=76rmasmsupffhqmx3qdesxex24):
     dependencies:
       ansi-colors: 4.1.3
       strip-ansi: 6.0.1

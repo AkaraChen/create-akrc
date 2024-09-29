@@ -1,8 +1,7 @@
-import { getLatestVersion } from '@/core/utils';
+import { getLatestVersion, prompt } from '@/core/utils';
 import type { IFeature } from '@/features/type';
 import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
-import enquirer from 'enquirer';
 import { genArrayFromRaw, genString } from 'knitwork';
 import { PackageNotFoundError, VersionNotFoundError } from 'latest-version';
 
@@ -18,14 +17,12 @@ export const dprint: IFeature<{
     presets: PresetName[];
 }> = {
     name: 'dprint',
-    options: Effect.promise<{ presets: PresetName[] }>(() =>
-        enquirer.prompt({
-            type: 'multiselect',
-            name: 'presets',
-            message: 'Select the presets you want to use',
-            choices: presets as unknown as string[],
-        }),
-    ),
+    options: prompt<{ presets: PresetName[] }>({
+        type: 'multiselect',
+        name: 'presets',
+        message: 'Select the presets you want to use',
+        choices: presets as unknown as string[],
+    }),
     setup(ctx, options) {
         const presets = options.presets;
         return Effect.gen(function* () {

@@ -1,7 +1,7 @@
+import { prompt } from '@/core/utils';
 import type { IFeature } from '@/features/type';
 import { CommandExecutor, FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
-import enquirer from 'enquirer';
 
 type NodeLinker = 'node-modules' | 'pnp' | 'pnpm';
 const nodeLinkers = ['node-modules', 'pnp', 'pnpm'] as NodeLinker[];
@@ -10,16 +10,14 @@ export const yarnStable: IFeature<{
     nodeLinker: NodeLinker;
 }> = {
     name: 'yarn-stable',
-    options: Effect.promise(() =>
-        enquirer.prompt<{
-            nodeLinker: NodeLinker;
-        }>({
-            type: 'select',
-            name: 'nodeLinker',
-            message: 'Select a node linker',
-            choices: nodeLinkers,
-        }),
-    ),
+    options: prompt<{
+        nodeLinker: NodeLinker;
+    }>({
+        type: 'select',
+        name: 'nodeLinker',
+        message: 'Select a node linker',
+        choices: nodeLinkers,
+    }),
     setup(ctx, options) {
         const { nodeLinker } = options;
         return Effect.gen(function* () {

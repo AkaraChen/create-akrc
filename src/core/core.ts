@@ -2,7 +2,6 @@ import { ParserError } from '@/errors/schema';
 import { type PM, detectPM } from '@akrc/monorepo-tools';
 import { Command, CommandExecutor, FileSystem, Path } from '@effect/platform';
 import { Effect, Option, pipe } from 'effect';
-import enquirer from 'enquirer';
 import { getDep } from 'fnpm-toolkit';
 import Handlebars from 'handlebars';
 import { packageDirectory } from 'pkg-dir';
@@ -10,7 +9,7 @@ import { commands } from 'pm-combo';
 import { omit } from 'radash';
 import { glob } from 'tinyglobby';
 import type { PackageJson } from 'type-fest';
-import { getLatestVersion } from './utils';
+import { getLatestVersion, prompt } from './utils';
 
 const decoder = new TextDecoder();
 const encoder = new TextEncoder();
@@ -127,15 +126,13 @@ export class Context {
                 Effect.gen(function* () {
                     for (const [name, script] of Object.entries(scripts)) {
                         if (pkg.scripts?.[name]) {
-                            const { confirmed } = yield* Effect.promise<{
+                            const { confirmed } = yield* prompt<{
                                 confirmed: boolean;
-                            }>(() =>
-                                enquirer.prompt({
-                                    type: 'confirm',
-                                    name: 'confirmed',
-                                    message: `Script ${name} already exists. Do you want to overwrite it?`,
-                                }),
-                            );
+                            }>({
+                                type: 'confirm',
+                                name: 'confirmed',
+                                message: `Script ${name} already exists. Do you want to overwrite it?`,
+                            });
                             if (!confirmed) {
                                 continue;
                             }
@@ -275,31 +272,27 @@ export class Context {
     }
 }
 
-const selectPM = Effect.promise(() =>
-    enquirer.prompt<{
-        pm: PM;
-    }>({
-        type: 'select',
-        name: 'pm',
-        message: 'Select package manager',
-        choices: ['npm', 'yarn', 'pnpm'],
-    }),
-).pipe(Effect.map((result) => result.pm));
+const selectPM = prompt<{
+    pm: PM;
+}>({
+    type: 'select',
+    name: 'pm',
+    message: 'Select package manager',
+    choices: ['npm', 'yarn', 'pnpm'],
+}).pipe(Effect.map((result) => result.pm));
 
 export const createContext = Effect.gen(function* () {
     const cwd = process.cwd();
     const root = yield* Effect.promise(() => packageDirectory({ cwd }));
     if (!root) {
-        const { confirmed } = yield* Effect.promise(() =>
-            enquirer.prompt<{
-                confirmed: boolean;
-            }>({
-                type: 'confirm',
-                name: 'confirmed',
-                message:
-                    'Cannot find package directory. Do you want to use current directory as root?',
-            }),
-        );
+        const { confirmed } = yield* prompt<{
+            confirmed: boolean;
+        }>({
+            type: 'confirm',
+            name: 'confirmed',
+            message:
+                'Cannot find package directory. Do you want to use current directory as root?',
+        });
         if (confirmed) {
             const pm = yield* selectPM;
             const exec = yield* CommandExecutor.CommandExecutor;
