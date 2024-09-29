@@ -11,9 +11,6 @@ import { glob } from 'tinyglobby';
 import type { PackageJson } from 'type-fest';
 import { getLatestVersion, prompt } from './utils';
 
-const decoder = new TextDecoder();
-const encoder = new TextEncoder();
-
 type DepInput = {
     name: string;
     version?: string;
@@ -33,10 +30,9 @@ export class Context {
     json<T>(path: string) {
         return Effect.gen(function* () {
             const fs = yield* FileSystem.FileSystem;
-            const content = yield* fs.readFile(path);
-            const str = decoder.decode(content);
+            const content = yield* fs.readFileString(path);
             const json = yield* Effect.try<T, ParserError>({
-                try: () => JSON.parse(str),
+                try: () => JSON.parse(content),
                 catch: () => new ParserError(path),
             });
             return json;
@@ -224,9 +220,7 @@ export class Context {
                 './src/templates',
                 `${name}.hbs`,
             );
-            const content = yield* fs
-                .readFile(filePath)
-                .pipe(Effect.andThen((content) => decoder.decode(content)));
+            const content = yield* fs.readFileString(filePath);
             return Handlebars.compile(content);
         });
     }
@@ -241,9 +235,6 @@ export class Context {
         );
     }
 
-    encoder = encoder;
-    decoder = decoder;
-
     addGitignore(label: string, patterns: string[]) {
         return pipe(
             Effect.log(`Add ${label} to .gitignore`),
@@ -257,13 +248,7 @@ export class Context {
                         yield* fs.writeFileString(filePath, content);
                         return;
                     }
-                    const oldContent = yield* fs
-                        .readFile(filePath)
-                        .pipe(
-                            Effect.andThen((content) =>
-                                decoder.decode(content),
-                            ),
-                        );
+                    const oldContent = yield* fs.readFileString(filePath);
                     const newContent = `${oldContent}\n${content}`;
                     yield* fs.writeFileString(filePath, newContent);
                 });
