@@ -4,12 +4,11 @@ import { Command, CommandExecutor, FileSystem, Path } from '@effect/platform';
 import { Effect, Option, pipe } from 'effect';
 import { getDep } from 'fnpm-toolkit';
 import Handlebars from 'handlebars';
-import { packageDirectory } from 'pkg-dir';
 import { commands } from 'pm-combo';
 import { omit } from 'radash';
 import { glob } from 'tinyglobby';
 import type { PackageJson } from 'type-fest';
-import { getLatestVersion, prompt } from './utils';
+import { getLatestVersion, pkgDir, prompt } from './utils';
 
 type DepInput = {
     name: string;
@@ -207,16 +206,12 @@ export class Context {
             const path = yield* Path.Path;
             const fs = yield* FileSystem.FileSystem;
             const url = yield* path.fromFileUrl(new URL(import.meta.url));
-            const dirname = yield* Effect.promise(() =>
-                packageDirectory({
-                    cwd: path.dirname(url),
-                }),
-            );
+            const dirname = yield* pkgDir(path.dirname(url));
             if (!dirname) {
-                throw new Error('Cannot find package directory');
+                yield* Effect.die(new Error('Cannot find package directory'));
             }
             const filePath = path.join(
-                dirname,
+                dirname as string,
                 './src/templates',
                 `${name}.hbs`,
             );
@@ -268,7 +263,7 @@ const selectPM = prompt<{
 
 export const createContext = Effect.gen(function* () {
     const cwd = process.cwd();
-    const root = yield* Effect.promise(() => packageDirectory({ cwd }));
+    const root = yield* pkgDir(cwd);
     if (!root) {
         const { confirmed } = yield* prompt<{
             confirmed: boolean;

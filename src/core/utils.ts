@@ -4,6 +4,7 @@ import latestVersion, {
     PackageNotFoundError,
     VersionNotFoundError,
 } from 'latest-version';
+import { packageDirectory } from 'pkg-dir';
 
 type UnknownError = Error;
 type LatestVersionError =
@@ -41,4 +42,8 @@ export function prompt<T>(options: PromptOptions) {
     return Effect.tryPromise(() => enquirer.prompt<T>(options)).pipe(
         Effect.catchAll(() => Effect.dieMessage('Failed to prompt')),
     );
+}
+
+export function pkgDir(cwd?: string) {
+    return Effect.promise(() => packageDirectory({ cwd }));
 }
