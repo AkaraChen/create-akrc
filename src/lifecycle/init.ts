@@ -76,9 +76,13 @@ export const init = (ctx: Context) => {
             Effect.andThen((selected) => selected.filter((x) => !!x)),
         );
 
+        const ordered = selected.sort(
+            (a, b) => (a.order ?? 2) - (b.order ?? 2),
+        );
+
         return {
             mode,
-            features: selected,
+            features: ordered,
         };
     });
 };

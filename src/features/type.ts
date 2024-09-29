@@ -22,9 +22,18 @@ type Task<T> = Effect.Effect<
     | Path.Path
 >;
 
+export enum Order {
+    First = 0,
+    Early = 1,
+    Normal = 2,
+    Late = 3,
+    Final = 4,
+}
+
 export interface IFeature<T = null> {
     name: string;
     options?: Effect.Effect<T>;
+    order?: Order;
     setup(ctx: Context, options: T): Task<ILifecycle | void>;
     detect(ctx: Context): Task<boolean>;
     teardown?(ctx: Context): Task<ILifecycle | void>;

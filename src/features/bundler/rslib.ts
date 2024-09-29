@@ -1,6 +1,7 @@
-import type { IFeature } from '@/features/type';
+import { type IFeature, Order } from '@/features/type';
 import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
+import { ensureEntry } from './utils';
 
 const configFile = 'rslib.config.ts';
 const scripts = {
@@ -10,8 +11,10 @@ const scripts = {
 
 export const rslib: IFeature = {
     name: 'rslib',
+    order: Order.First,
     setup(ctx) {
         return Effect.gen(function* () {
+            yield* ensureEntry(ctx.root);
             yield* ctx.addDeps({ name: '@rslib/core' });
             const template = yield* ctx.template('rslib');
             const content = ctx.encoder.encode(template(null));

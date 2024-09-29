@@ -18,13 +18,17 @@ export const exec = <T>(
                           const option = features.options
                               ? yield* features.options
                               : (null as T);
-                          return yield* features.setup(ctx, option);
+                          return yield* features
+                              .setup(ctx, option)
+                              .pipe(Effect.withLogSpan(features.name));
                       });
                   })
                 : yield* Effect.forEach(features, (features) => {
                       return Effect.gen(function* () {
                           if (features.teardown) {
-                              yield* features.teardown(ctx);
+                              yield* features
+                                  .teardown(ctx)
+                                  .pipe(Effect.withLogSpan(features.name));
                           }
                       });
                   });

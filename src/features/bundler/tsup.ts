@@ -1,8 +1,8 @@
-import type { IFeature } from '@/features/type';
+import { type IFeature, Order } from '@/features/type';
 import { FileSystem, Path } from '@effect/platform';
 import { Effect, Option } from 'effect';
 import { genArrayFromRaw, genString } from 'knitwork';
-import { entryDetect, switchToModule } from './utils';
+import { ensureEntry, switchToModule } from './utils';
 
 const configFiles = ['tsup.config.ts', 'tsup.config.js', 'tsup.config.cjs'];
 
@@ -13,6 +13,7 @@ const scripts = {
 
 export const tsup: IFeature = {
     name: 'tsup',
+    order: Order.First,
     setup(ctx) {
         return Effect.gen(function* () {
             yield* switchToModule(ctx);
@@ -21,9 +22,8 @@ export const tsup: IFeature = {
             const template = yield* ctx.template('tsup');
             const fs = yield* FileSystem.FileSystem;
             const path = yield* Path.Path;
-            const entry = yield* entryDetect(ctx.root).pipe(
-                Effect.map((entry) => Option.getOrUndefined(entry)),
-                Effect.andThen((entry) => (entry ? [entry] : [])),
+            const entry = yield* ensureEntry(ctx.root).pipe(
+                Effect.andThen((entry) => [entry]),
                 Effect.andThen((entry) =>
                     entry.map((e) => path.relative(ctx.root, e)),
                 ),
