@@ -1,5 +1,4 @@
 import type { IFeature } from '@/features/type';
-import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 
 const configFiles = ['vitest.{workspace,projects}.{json,ts,js}'];
@@ -11,11 +10,10 @@ export const vitestWorkspace: IFeature = {
         return Effect.gen(function* () {
             yield* ctx.addDeps(...deps);
             const template = yield* ctx.template('vitest.workspace');
-            const content = ctx.encoder.encode(template(null));
-            const fs = yield* FileSystem.FileSystem;
-            yield* fs.writeFile(
+            const fs = yield* ctx.fs;
+            yield* fs.writeFileString(
                 yield* ctx.join('vitest.workspace.ts'),
-                content,
+                template(null),
             );
         });
     },
@@ -26,7 +24,7 @@ export const vitestWorkspace: IFeature = {
     },
     teardown(ctx) {
         return Effect.gen(function* () {
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const files = yield* ctx.glob(configFiles);
             yield* Effect.forEach(files, (file) => fs.remove(file));
         });

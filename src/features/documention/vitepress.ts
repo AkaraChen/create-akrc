@@ -1,5 +1,5 @@
 import type { IFeature } from '@/features/type';
-import { Command, CommandExecutor, FileSystem } from '@effect/platform';
+import { Command } from '@effect/platform';
 import { Effect, pipe } from 'effect';
 import { commands } from 'pm-combo';
 
@@ -15,7 +15,7 @@ export const vitepress: IFeature = {
     name: 'vitepress',
     detect(ctx) {
         return Effect.gen(function* () {
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             return yield* fs.exists(yield* ctx.join(configDir));
         });
     },
@@ -27,7 +27,7 @@ export const vitepress: IFeature = {
                 })),
             );
             yield* ctx.addScripts(scripts);
-            const exec = yield* CommandExecutor.CommandExecutor;
+            const exec = yield* ctx.exec;
             yield* Effect.log('Initializing Vitepress...');
             const process = yield* exec.start(
                 pipe(
@@ -52,7 +52,7 @@ export const vitepress: IFeature = {
         return Effect.gen(function* () {
             yield* ctx.removeDeps(...deps);
             yield* ctx.removeScripts(scripts);
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             yield* fs.remove(yield* ctx.join(configDir), { recursive: true });
             return {
                 afterTeardown: Effect.log(

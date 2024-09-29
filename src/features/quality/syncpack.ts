@@ -1,5 +1,4 @@
 import type { IFeature } from '@/features/type';
-import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 
 const deps = ['syncpack'];
@@ -18,10 +17,12 @@ export const syncpack: IFeature = {
         return Effect.gen(function* () {
             yield* ctx.addDeps(...deps.map((dep) => ({ name: dep })));
             yield* ctx.addScripts(scripts);
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const template = yield* ctx.template('syncpackrc');
-            const content = ctx.encoder.encode(template(null));
-            yield* fs.writeFile(yield* ctx.join('.syncpackrc'), content);
+            yield* fs.writeFileString(
+                yield* ctx.join('.syncpackrc'),
+                template(null),
+            );
         });
     },
     detect(ctx) {
@@ -33,7 +34,7 @@ export const syncpack: IFeature = {
         return Effect.gen(function* () {
             yield* ctx.removeDeps(...deps);
             yield* ctx.removeScripts(scripts);
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const files = yield* ctx.glob(configFiles);
             yield* Effect.forEach(files, (file) => fs.remove(file));
         });

@@ -1,5 +1,4 @@
 import type { IFeature } from '@/features/type';
-import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 
 const deps = ['cypress'];
@@ -23,7 +22,7 @@ export const cypress: IFeature = {
         return Effect.gen(function* () {
             yield* ctx.removeDeps(...deps);
             yield* ctx.removeScripts(scripts);
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const files = yield* ctx.glob(configFiles);
             yield* Effect.forEach(files, (file) => fs.remove(file));
         });

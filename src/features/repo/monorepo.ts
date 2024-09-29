@@ -1,7 +1,6 @@
 import { prompt } from '@/core/utils';
 import type { IFeature } from '@/features/type';
 import * as yaml from '@akrc/yaml';
-import { FileSystem } from '@effect/platform';
 import { isPlatformError } from '@effect/platform/Error';
 import { Effect } from 'effect';
 
@@ -21,7 +20,7 @@ export const monorepo: IFeature<{
     }),
     setup(ctx, options) {
         return Effect.gen(function* () {
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const { dirs } = options;
             yield* Effect.forEach(dirs, (dir) =>
                 Effect.gen(function* () {
@@ -37,10 +36,10 @@ export const monorepo: IFeature<{
             );
             if (ctx.pm === 'pnpm') {
                 const filePath = yield* ctx.join('pnpm-workspace.yaml');
-                const content = ctx.encoder.encode(
+                yield* fs.writeFileString(
+                    filePath,
                     yaml.dump({ packages: dirs }),
                 );
-                yield* fs.writeFile(filePath, content);
                 yield* Effect.log('pnpm-workspace.yaml created');
             } else {
                 yield* ctx.updatePackage(async (pkg) => {
@@ -52,7 +51,7 @@ export const monorepo: IFeature<{
     },
     detect(ctx) {
         return Effect.gen(function* () {
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const pnpm = yield* fs.exists(
                 yield* ctx.join('pnpm-workspace.yaml'),
             );
@@ -64,7 +63,7 @@ export const monorepo: IFeature<{
     },
     teardown(ctx) {
         return Effect.gen(function* () {
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const pnpm = yield* fs.exists(
                 yield* ctx.join('pnpm-workspace.yaml'),
             );

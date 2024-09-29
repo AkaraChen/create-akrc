@@ -1,5 +1,5 @@
 import type { IFeature } from '@/features/type';
-import { Command, CommandExecutor, FileSystem } from '@effect/platform';
+import { Command } from '@effect/platform';
 import { Effect, pipe } from 'effect';
 import { commands } from 'pm-combo';
 
@@ -15,7 +15,7 @@ export const storybook: IFeature = {
     name: 'storybook',
     setup(ctx) {
         return Effect.gen(function* () {
-            const exec = yield* CommandExecutor.CommandExecutor;
+            const exec = yield* ctx.exec;
             yield* Effect.log('Initializing storybook');
             const process = yield* exec.start(
                 pipe(
@@ -40,7 +40,7 @@ export const storybook: IFeature = {
     },
     teardown(ctx) {
         return Effect.gen(function* () {
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const matchedFiles = yield* ctx.glob(configFiles);
             yield* Effect.forEach(matchedFiles, (file) => fs.remove(file));
             const devDeps = yield* ctx.package.pipe(

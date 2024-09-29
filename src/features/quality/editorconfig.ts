@@ -1,5 +1,4 @@
 import type { IFeature } from '@/features/type';
-import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 
 const configFile = '.editorconfig';
@@ -8,10 +7,12 @@ export const editorconfig: IFeature = {
     name: 'editorconfig',
     setup(ctx) {
         return Effect.gen(function* () {
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const template = yield* ctx.template('editorconfig');
-            const content = ctx.encoder.encode(template(null));
-            yield* fs.writeFile(yield* ctx.join(configFile), content);
+            yield* fs.writeFileString(
+                yield* ctx.join(configFile),
+                template(null),
+            );
         });
     },
     detect(ctx) {
@@ -21,7 +22,7 @@ export const editorconfig: IFeature = {
     },
     teardown(ctx) {
         return Effect.gen(function* () {
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             yield* fs.remove(yield* ctx.join(configFile));
         });
     },

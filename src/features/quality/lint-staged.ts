@@ -1,5 +1,4 @@
 import type { IFeature } from '@/features/type';
-import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 
 const configFiles = [
@@ -15,10 +14,9 @@ export const lintStaged: IFeature = {
     setup(ctx) {
         return Effect.gen(function* () {
             yield* ctx.addDeps(...deps);
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const template = yield* ctx.template('lint-staged');
-            const content = ctx.encoder.encode(template(null));
-            yield* fs.writeFile('.lintstagedrc', content);
+            yield* fs.writeFileString('.lintstagedrc', template(null));
             return {
                 afterTeardown: Effect.log(
                     'lint-staged setup finished, you may want to see documention at https://github.com/lint-staged/lint-staged#configuration',
@@ -34,7 +32,7 @@ export const lintStaged: IFeature = {
     teardown(ctx) {
         return Effect.gen(function* () {
             yield* ctx.removeDeps(...deps);
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const files = yield* ctx.glob(configFiles);
             yield* Effect.forEach(files, (file) => fs.remove(file));
         });

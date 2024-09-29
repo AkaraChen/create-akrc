@@ -26,6 +26,10 @@ export class Context {
         public readonly pm: PM,
     ) {}
 
+    fs = FileSystem.FileSystem;
+    path = Path.Path;
+    exec = CommandExecutor.CommandExecutor;
+
     json<T>(path: string) {
         return Effect.gen(function* () {
             const fs = yield* FileSystem.FileSystem;
@@ -47,13 +51,9 @@ export class Context {
     writeJson<T>(path: string, json: T | string) {
         return Effect.gen(function* () {
             const fs = yield* FileSystem.FileSystem;
-            yield* fs.writeFile(
+            yield* fs.writeFileString(
                 path,
-                encoder.encode(
-                    typeof json === 'string'
-                        ? json
-                        : JSON.stringify(json, null, 2),
-                ),
+                typeof json === 'string' ? json : JSON.stringify(json, null, 2),
             );
         }).pipe(Effect.catchAll(Effect.logFatal));
     }
@@ -254,7 +254,7 @@ export class Context {
                     const content = `# ${label}\n${patterns.join('\n')}\n`;
                     const exists = yield* fs.exists(filePath);
                     if (!exists) {
-                        yield* fs.writeFile(filePath, encoder.encode(content));
+                        yield* fs.writeFileString(filePath, content);
                         return;
                     }
                     const oldContent = yield* fs
@@ -265,7 +265,7 @@ export class Context {
                             ),
                         );
                     const newContent = `${oldContent}\n${content}`;
-                    yield* fs.writeFile(filePath, encoder.encode(newContent));
+                    yield* fs.writeFileString(filePath, newContent);
                 });
             }),
         );

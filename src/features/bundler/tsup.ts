@@ -1,6 +1,5 @@
 import { type IFeature, Order } from '@/features/type';
-import { FileSystem, Path } from '@effect/platform';
-import { Effect, Option } from 'effect';
+import { Effect } from 'effect';
 import { genArrayFromRaw, genString } from 'knitwork';
 import { ensureEntry, switchToModule } from './utils';
 
@@ -20,8 +19,8 @@ export const tsup: IFeature = {
             yield* ctx.addDeps({ name: 'tsup' });
             const config = yield* ctx.join('tsup.config.ts');
             const template = yield* ctx.template('tsup');
-            const fs = yield* FileSystem.FileSystem;
-            const path = yield* Path.Path;
+            const fs = yield* ctx.fs;
+            const path = yield* ctx.path;
             const entry = yield* ensureEntry(ctx.root).pipe(
                 Effect.andThen((entry) => [entry]),
                 Effect.andThen((entry) =>
@@ -31,13 +30,13 @@ export const tsup: IFeature = {
             const format = yield* ctx.package.pipe(
                 Effect.map((json) => (json.type === 'module' ? 'esm' : 'cjs')),
             );
-            const content = ctx.encoder.encode(
+            yield* fs.writeFileString(
+                config,
                 template({
                     entry: genArrayFromRaw(entry.map((e) => genString(e))),
                     format: genString(format),
                 }),
             );
-            yield* fs.writeFile(config, content);
             yield* ctx.addScripts(scripts);
         });
     },
@@ -50,7 +49,7 @@ export const tsup: IFeature = {
         return Effect.gen(function* () {
             yield* ctx.removeDeps('tsup');
             yield* ctx.removeScripts(scripts);
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const files = yield* ctx.glob(configFiles);
             yield* Effect.forEach(files, (file) => fs.remove(file));
         });

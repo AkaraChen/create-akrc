@@ -1,5 +1,4 @@
 import type { IFeature } from '@/features/type';
-import { CommandExecutor, FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 import { commands } from 'pm-combo';
 
@@ -15,7 +14,7 @@ export const jest: IFeature = {
         return Effect.gen(function* () {
             yield* ctx.addDeps('jest', 'typescript', 'ts-jest', '@types/jest');
             yield* ctx.addScripts(scripts);
-            const exec = yield* CommandExecutor.CommandExecutor;
+            const exec = yield* ctx.exec;
             yield* Effect.log('Initializing jest');
             const process = yield* exec.start(
                 ctx.makeCommand(
@@ -37,7 +36,7 @@ export const jest: IFeature = {
         return Effect.gen(function* () {
             yield* ctx.removeDeps('jest', 'ts-jest', '@types/jest');
             yield* ctx.removeScripts(scripts);
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const files = yield* ctx.glob(configFiles);
             yield* Effect.forEach(files, (file) => fs.remove(file));
         });

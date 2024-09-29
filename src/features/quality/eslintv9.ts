@@ -1,6 +1,5 @@
 import { prompt } from '@/core/utils';
 import type { IFeature } from '@/features/type';
-import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 import { genImport } from 'knitwork';
 
@@ -80,9 +79,8 @@ export const eslintv9: IFeature<{
                 })
                 .join('\n');
             const exports = `export default ${preset.exportSpecifier}`;
-            const content = ctx.encoder.encode(template({ imports, exports }));
-            const fs = yield* FileSystem.FileSystem;
-            yield* fs.writeFile(filePath, content);
+            const fs = yield* ctx.fs;
+            yield* fs.writeFileString(filePath, template({ imports, exports }));
             yield* ctx.addScripts(scripts);
         });
     },
@@ -94,7 +92,7 @@ export const eslintv9: IFeature<{
     teardown(ctx) {
         return Effect.gen(function* () {
             const files = yield* ctx.glob(configFiles);
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             yield* Effect.forEach(files, (file) => fs.remove(file));
             yield* ctx.removeScripts(scripts);
             yield* ctx.removeDeps(

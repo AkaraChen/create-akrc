@@ -1,6 +1,5 @@
 import { prompt } from '@/core/utils';
 import type { IFeature } from '@/features/type';
-import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 
 const configFiles = ['tsconfig.json', 'tsconfig.**.json'];
@@ -26,10 +25,12 @@ export const tsconfig: IFeature<{
         return Effect.gen(function* () {
             yield* ctx.addDeps(...deps);
             yield* ctx.addScripts(scripts);
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const template = yield* ctx.template('tsconfig');
-            const content = ctx.encoder.encode(template({ selected }));
-            yield* fs.writeFile(yield* ctx.join('tsconfig.json'), content);
+            yield* fs.writeFileString(
+                yield* ctx.join('tsconfig.json'),
+                template({ selected }),
+            );
         });
     },
     detect(ctx) {
@@ -39,7 +40,7 @@ export const tsconfig: IFeature<{
     },
     teardown(ctx) {
         return Effect.gen(function* () {
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             yield* fs.remove(yield* ctx.join('tsconfig.json'));
             yield* ctx.removeScripts(scripts);
             yield* ctx.removeDeps(...deps);

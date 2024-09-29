@@ -1,5 +1,4 @@
 import type { IFeature } from '@/features/type';
-import { CommandExecutor } from '@effect/platform';
 import { Effect } from 'effect';
 import { commands } from 'pm-combo';
 
@@ -11,7 +10,7 @@ export const knip: IFeature = {
     name: 'knip',
     setup(ctx) {
         return Effect.gen(function* () {
-            const exec = yield* CommandExecutor.CommandExecutor;
+            const exec = yield* ctx.exec;
             yield* Effect.log('Initializing knip');
             const process = yield* exec.start(
                 ctx.makeCommand(

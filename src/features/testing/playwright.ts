@@ -1,5 +1,5 @@
 import type { IFeature } from '@/features/type';
-import { Command, CommandExecutor, FileSystem } from '@effect/platform';
+import { Command } from '@effect/platform';
 import { Effect, pipe } from 'effect';
 import { commands } from 'pm-combo';
 
@@ -13,7 +13,7 @@ export const playwright: IFeature = {
     name: 'playwright',
     setup(ctx) {
         return Effect.gen(function* () {
-            const exec = yield* CommandExecutor.CommandExecutor;
+            const exec = yield* ctx.exec;
             const process = yield* exec.start(
                 pipe(
                     ctx.makeCommand(
@@ -38,7 +38,7 @@ export const playwright: IFeature = {
     },
     teardown(ctx) {
         return Effect.gen(function* () {
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const files = yield* ctx.glob([...configFiles, ...otherFiles]);
             yield* Effect.forEach(files, (file) => fs.remove(file));
             yield* ctx.removeDeps('@playwright/test');

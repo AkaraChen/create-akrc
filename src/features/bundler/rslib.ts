@@ -1,5 +1,4 @@
 import { type IFeature, Order } from '@/features/type';
-import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 import { ensureEntry } from './utils';
 
@@ -16,22 +15,24 @@ export const rslib: IFeature = {
         return Effect.gen(function* () {
             yield* ensureEntry(ctx.root);
             yield* ctx.addDeps({ name: '@rslib/core' });
+            const fs = yield* ctx.fs;
             const template = yield* ctx.template('rslib');
-            const content = ctx.encoder.encode(template(null));
-            const fs = yield* FileSystem.FileSystem;
-            yield* fs.writeFile(yield* ctx.join(configFile), content);
+            yield* fs.writeFileString(
+                yield* ctx.join(configFile),
+                template(null),
+            );
             yield* ctx.addScripts(scripts);
         });
     },
     detect(ctx) {
         return Effect.gen(function* () {
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             return yield* fs.exists(yield* ctx.join(configFile));
         });
     },
     teardown(ctx) {
         return Effect.gen(function* () {
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             yield* fs.remove(yield* ctx.join(configFile));
             yield* ctx.removeDeps('@rslib/core');
             yield* ctx.removeScripts(scripts);

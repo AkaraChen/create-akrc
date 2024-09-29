@@ -1,5 +1,4 @@
 import type { IFeature } from '@/features/type';
-import { CommandExecutor, FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 import { commands } from 'pm-combo';
 
@@ -14,7 +13,7 @@ export const tailwind: IFeature = {
                 { name: 'autoprefixer' },
                 { name: 'postcss' },
             );
-            const exec = yield* CommandExecutor.CommandExecutor;
+            const exec = yield* ctx.exec;
             yield* Effect.log('Initializing tailwind');
             const process = yield* exec.start(
                 ctx.makeCommand(
@@ -35,7 +34,7 @@ export const tailwind: IFeature = {
     teardown(ctx) {
         return Effect.gen(function* () {
             yield* ctx.removeDeps('tailwindcss');
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const files = yield* ctx.glob(configFiles);
             yield* Effect.forEach(files, (file) => fs.remove(file));
         });

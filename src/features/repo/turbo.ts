@@ -1,5 +1,4 @@
 import type { IFeature } from '@/features/type';
-import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 
 const configFiles = ['turbo.json', '**/turbo.json'];
@@ -10,10 +9,12 @@ export const turbo: IFeature = {
     setup(ctx) {
         return Effect.gen(function* () {
             yield* ctx.addDeps(...deps);
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const template = yield* ctx.template('turbo');
-            const content = ctx.encoder.encode(template(null));
-            yield* fs.writeFile(yield* ctx.join('turbo.json'), content);
+            yield* fs.writeFileString(
+                yield* ctx.join('turbo.json'),
+                template(null),
+            );
         });
     },
     detect(ctx) {
@@ -24,7 +25,7 @@ export const turbo: IFeature = {
     teardown(ctx) {
         return Effect.gen(function* () {
             yield* ctx.removeDeps(...deps);
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const files = yield* ctx.glob(configFiles);
             yield* Effect.forEach(files, (file) => fs.remove(file));
         });

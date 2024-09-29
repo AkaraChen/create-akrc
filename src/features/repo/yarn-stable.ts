@@ -1,6 +1,5 @@
 import { prompt } from '@/core/utils';
 import type { IFeature } from '@/features/type';
-import { CommandExecutor, FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 
 type NodeLinker = 'node-modules' | 'pnp' | 'pnpm';
@@ -21,17 +20,16 @@ export const yarnStable: IFeature<{
     setup(ctx, options) {
         const { nodeLinker } = options;
         return Effect.gen(function* () {
-            const exec = yield* CommandExecutor.CommandExecutor;
+            const exec = yield* ctx.exec;
             yield* Effect.log('Setting yarn to stable');
             const process = yield* exec.start(
                 ctx.makeCommand(['yarn', 'set', 'version', 'stable']),
             );
             yield* process.exitCode;
             const template = yield* ctx.template('yarnrc');
-            const content = ctx.encoder.encode(template({ nodeLinker }));
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const configPath = yield* ctx.join('.yarnrc.yml');
-            yield* fs.writeFile(configPath, content);
+            yield* fs.writeFileString(configPath, template({ nodeLinker }));
         });
     },
     detect(ctx) {
@@ -44,7 +42,7 @@ export const yarnStable: IFeature<{
     },
     teardown(ctx) {
         return Effect.gen(function* () {
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const configPath = yield* ctx.join('.yarnrc.yml');
             yield* fs.remove(configPath);
             yield* ctx.updatePackage(async (pkg) => {

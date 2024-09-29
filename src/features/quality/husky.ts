@@ -1,5 +1,5 @@
 import type { IFeature } from '@/features/type';
-import { Command, CommandExecutor, FileSystem } from '@effect/platform';
+import { Command } from '@effect/platform';
 import { Effect, pipe } from 'effect';
 import { commands } from 'pm-combo';
 
@@ -14,7 +14,7 @@ export const husky: IFeature = {
     setup(ctx) {
         return Effect.gen(function* () {
             yield* ctx.addDeps(...deps);
-            const exec = yield* CommandExecutor.CommandExecutor;
+            const exec = yield* ctx.exec;
             const process = yield* exec.start(
                 pipe(
                     ctx.makeCommand(
@@ -39,12 +39,12 @@ export const husky: IFeature = {
         return Effect.gen(function* () {
             yield* ctx.removeDeps(...deps);
             yield* ctx.removeScripts(scripts);
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const files = yield* ctx.glob(configFiles);
             yield* Effect.forEach(files, (file) =>
                 fs.remove(file, { recursive: true }),
             );
-            const exec = yield* CommandExecutor.CommandExecutor;
+            const exec = yield* ctx.exec;
             const process = yield* exec.start(
                 ctx.makeCommand(
                     commands.create.concat(ctx.pm, {

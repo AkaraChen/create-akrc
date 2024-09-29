@@ -1,5 +1,4 @@
 import type { IFeature } from '@/features/type';
-import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 
 const scripts = {
@@ -16,21 +15,18 @@ export const vitest: IFeature = {
             yield* ctx.addDeps({ name: 'vitest' });
             yield* ctx.addScripts(scripts);
             const template = yield* ctx.template('vitest.config');
-            const content = yield* Effect.sync(() => {
-                return template(null);
-            });
             yield* Effect.gen(function* () {
-                const fs = yield* FileSystem.FileSystem;
-                yield* fs.writeFile(
+                const fs = yield* ctx.fs;
+                yield* fs.writeFileString(
                     yield* ctx.join(configFile),
-                    ctx.encoder.encode(content),
+                    template(null),
                 );
             });
         });
     },
     detect(ctx) {
         return Effect.gen(function* () {
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             return yield* fs.exists(yield* ctx.join(configFile));
         });
     },
@@ -39,7 +35,7 @@ export const vitest: IFeature = {
             yield* ctx.removeDeps('vitest');
             yield* ctx.removeScripts(scripts);
             yield* Effect.gen(function* () {
-                const fs = yield* FileSystem.FileSystem;
+                const fs = yield* ctx.fs;
                 yield* fs.remove(yield* ctx.join(configFile));
             });
         });

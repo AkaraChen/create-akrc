@@ -1,5 +1,4 @@
 import { type IFeature, Order } from '@/features/type';
-import { CommandExecutor } from '@effect/platform';
 import { Effect } from 'effect';
 import { commands } from 'pm-combo';
 import { ensureEntry, switchToModule } from './utils';
@@ -16,7 +15,7 @@ export const bunchee: IFeature = {
         return Effect.gen(function* () {
             yield* switchToModule(ctx);
             yield* ensureEntry(ctx.root);
-            const exec = yield* CommandExecutor.CommandExecutor;
+            const exec = yield* ctx.exec;
             yield* ctx.addDeps({ name: 'bunchee' });
             yield* Effect.log('Preparing bunchee');
             const process = yield* exec.start(

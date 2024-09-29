@@ -1,6 +1,5 @@
 import { getLatestVersion, prompt } from '@/core/utils';
 import type { IFeature } from '@/features/type';
-import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 import { genArrayFromRaw, genString } from 'knitwork';
 import { PackageNotFoundError, VersionNotFoundError } from 'latest-version';
@@ -28,27 +27,26 @@ export const dprint: IFeature<{
         return Effect.gen(function* () {
             yield* ctx.addDeps(...deps);
             yield* ctx.addScripts(scripts);
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const filePath = yield* ctx.join('dprint.json');
             const template = yield* ctx.template('dprint');
             const latestVersion = yield* getLatestVersion(
                 '@akrc/dprint-config',
             );
-            const content = ctx.encoder.encode(
-                template({
-                    extends: genArrayFromRaw(
-                        presets.map((preset) =>
-                            genString(
-                                new URL(
-                                    `@akrc/dprint-config@${latestVersion}/src/${preset}.json`,
-                                    'https://cdn.jsdelivr.net/npm/',
-                                ).href,
-                            ),
+            const content = template({
+                extends: genArrayFromRaw(
+                    presets.map((preset) =>
+                        genString(
+                            new URL(
+                                `@akrc/dprint-config@${latestVersion}/src/${preset}.json`,
+                                'https://cdn.jsdelivr.net/npm/',
+                            ).href,
                         ),
                     ),
-                }),
-            );
-            yield* fs.writeFile(filePath, content);
+                ),
+            });
+
+            yield* fs.writeFileString(filePath, content);
         }).pipe(
             Effect.catchIf(
                 (e) =>
@@ -68,7 +66,7 @@ export const dprint: IFeature<{
     },
     teardown(ctx) {
         return Effect.gen(function* () {
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             const filePath = yield* ctx.join('dprint.json');
             yield* fs.remove(filePath);
             yield* ctx.removeScripts(scripts);

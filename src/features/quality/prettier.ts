@@ -1,6 +1,5 @@
 import { prompt } from '@/core/utils';
 import type { IFeature } from '@/features/type';
-import { FileSystem } from '@effect/platform';
 import { Effect } from 'effect';
 
 const configFiles = {
@@ -64,7 +63,7 @@ export const prettier: IFeature<{
                 ...configFiles.rcs,
                 configFiles.ignore,
             ]);
-            const fs = yield* FileSystem.FileSystem;
+            const fs = yield* ctx.fs;
             yield* Effect.forEach(configs, (config) => fs.remove(config));
             yield* ctx.removeScripts(scripts);
         });
