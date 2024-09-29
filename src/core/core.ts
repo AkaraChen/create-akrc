@@ -1,5 +1,5 @@
 import { type PM, detectPM } from '@akrc/monorepo-tools';
-import { Command, CommandExecutor, Path, FileSystem } from '@effect/platform';
+import { Command, CommandExecutor, FileSystem, Path } from '@effect/platform';
 import { Effect, Option, pipe } from 'effect';
 import enquirer from 'enquirer';
 import { getDep } from 'fnpm-toolkit';
@@ -187,7 +187,9 @@ export class Context {
                     }
                 });
             }),
-            Effect.andThen((pkg) => this.updatePackage(async () => pkg as PackageJson)),
+            Effect.andThen((pkg) =>
+                this.updatePackage(async () => pkg as PackageJson),
+            ),
         );
     }
 

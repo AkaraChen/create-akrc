@@ -24,7 +24,7 @@ export const switchToModule = (ctx: Context) => {
         );
         if (confirmed) {
             yield* ctx.updatePackage(async (json) => {
-                json.type = 'commonjs';
+                json.type = 'module';
                 return json;
             });
         }

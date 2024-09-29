@@ -71,7 +71,7 @@ export const eslintv9: IFeature<{
         const deps = [...preset.deps, ...sharedDeps];
         return Effect.gen(function* () {
             yield* ctx.addDeps(...deps);
-            const filePath = yield* ctx.join('eslint.config.js');
+            const filePath = yield* ctx.join('eslint.config.mjs');
             const template = yield* ctx.template('eslintv9');
             const imports = preset.imports
                 .map((i) => {
