@@ -5,25 +5,32 @@ import latestVersion, {
     VersionNotFoundError,
 } from 'latest-version';
 
+type UnknownError = Error;
+type LatestVersionError =
+    | PackageNotFoundError
+    | VersionNotFoundError
+    | UnknownError;
+
 export function getLatestVersion(name: string) {
     return pipe(
         Effect.log(`Getting the latest version of ${name}`),
         Effect.andThen(
             Effect.tryPromise({
-                async try() {
-                    return await latestVersion(name);
-                },
-                catch(error) {
-                    if (error instanceof PackageNotFoundError) {
-                        return error;
-                    }
-                    if (error instanceof VersionNotFoundError) {
-                        return error;
-                    }
-                    throw error;
-                },
+                try: () => latestVersion(name),
+                catch: (e) => e as LatestVersionError,
             }),
         ),
+        Effect.catchAll((e) => {
+            if (
+                e instanceof PackageNotFoundError ||
+                e instanceof VersionNotFoundError
+            ) {
+                return Effect.dieMessage(
+                    `Failed to get the latest version of ${name}`,
+                );
+            }
+            return Effect.die(e);
+        }),
         Effect.tap((version) =>
             Effect.log(`The latest version of ${name} is ${version}`),
         ),
