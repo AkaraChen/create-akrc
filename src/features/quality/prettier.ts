@@ -17,7 +17,7 @@ const scripts = {
 
 type Plugin = 'astro' | 'tailwind' | 'svelte';
 
-const plugins = ['astro', 'svelte', 'tailwind'] as Plugin[];
+const plugins = ['astro', 'svelte', 'tailwindcss'] as Plugin[];
 
 export const prettier: IFeature<{
     plugins: Array<Plugin>;
