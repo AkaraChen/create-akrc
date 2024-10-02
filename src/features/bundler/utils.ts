@@ -36,7 +36,11 @@ const detectEntry = (root: string) => {
 
 export const ensureEntry = (root: string) => {
     return detectEntry(root).pipe(
-        Effect.andThen((entry) => (entry ? entry : createEntry(root))),
+        Effect.andThen((entry) =>
+            Effect.gen(function* () {
+                return yield* entry ?? (yield* createEntry(root));
+            }),
+        ),
         Effect.catchIf(isNoSuchElementException, Effect.die),
     );
 };
