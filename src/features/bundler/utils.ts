@@ -23,6 +23,11 @@ const createEntry = (root: string) =>
                 const fs = yield* FileSystem.FileSystem;
                 const path = yield* Path.Path;
                 const filePath = path.join(root, entry);
+                const pathname = path.dirname(filePath);
+                const pathExists = yield* fs.exists(pathname);
+                if (!pathExists) {
+                    yield* fs.makeDirectory(pathname, { recursive: true });
+                }
                 yield* fs.writeFileString(filePath, content);
             }),
         ),
@@ -38,10 +43,13 @@ export const ensureEntry = (root: string) => {
     return detectEntry(root).pipe(
         Effect.andThen((entry) =>
             Effect.gen(function* () {
-                return yield* entry ?? (yield* createEntry(root));
+                if (Option.isSome(entry)) {
+                    return entry.value;
+                } else {
+                    return yield* createEntry(root);
+                }
             }),
         ),
-        Effect.catchIf(isNoSuchElementException, Effect.die),
     );
 };
 
