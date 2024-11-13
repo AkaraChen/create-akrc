@@ -284,6 +284,19 @@ export const createContext = Effect.gen(function* () {
                 pipe(Command.make(command!, ...args)),
             );
             yield* process.exitCode;
+            const fs = yield* FileSystem.FileSystem;
+            const path = yield* Path.Path;
+            const pkgContent = JSON.parse(yield* fs.readFileString(
+                path.join(cwd, 'package.json'),
+            )) as PackageJson;
+
+            if (pkgContent.scripts?.test === 'echo "Error: no test specified" && exit 1') {
+                delete pkgContent.scripts.test;
+                yield* fs.writeFileString(
+                    path.join(cwd, 'package.json'),
+                    JSON.stringify(pkgContent, null, 2),
+                )
+            }
             return new Context(cwd, pm);
         }
         yield* Effect.die(new Error('Cannot find package directory'));
