@@ -286,16 +286,19 @@ export const createContext = Effect.gen(function* () {
             yield* process.exitCode;
             const fs = yield* FileSystem.FileSystem;
             const path = yield* Path.Path;
-            const pkgContent = JSON.parse(yield* fs.readFileString(
-                path.join(cwd, 'package.json'),
-            )) as PackageJson;
+            const pkgContent = JSON.parse(
+                yield* fs.readFileString(path.join(cwd, 'package.json')),
+            ) as PackageJson;
 
-            if (pkgContent.scripts?.test === 'echo "Error: no test specified" && exit 1') {
-                delete pkgContent.scripts.test;
+            if (
+                pkgContent.scripts?.test ===
+                'echo "Error: no test specified" && exit 1'
+            ) {
+                pkgContent.scripts.test = undefined;
                 yield* fs.writeFileString(
                     path.join(cwd, 'package.json'),
                     JSON.stringify(pkgContent, null, 2),
-                )
+                );
             }
             return new Context(cwd, pm);
         }

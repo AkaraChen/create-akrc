@@ -2,7 +2,6 @@ import type { Context } from '@/core/core';
 import { prompt } from '@/core/utils';
 import { FileSystem, Path } from '@effect/platform';
 import { Effect, Option } from 'effect';
-import { isNoSuchElementException } from 'effect/Cause';
 import { tryFile } from 'try-files';
 
 const ext = ['ts', 'js'];
@@ -45,9 +44,8 @@ export const ensureEntry = (root: string) => {
             Effect.gen(function* () {
                 if (Option.isSome(entry)) {
                     return entry.value;
-                } else {
-                    return yield* createEntry(root);
                 }
+                return yield* createEntry(root);
             }),
         ),
     );

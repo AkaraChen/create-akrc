@@ -15,6 +15,7 @@ import { prettier } from './quality/prettier';
 import { skott } from './quality/skott';
 import { syncpack } from './quality/syncpack';
 import { tsconfig } from './quality/tsconfig';
+import { gitignore } from './repo/gitignore';
 import { monorepo } from './repo/monorepo';
 import { turbo } from './repo/turbo';
 import { yarnStable } from './repo/yarn-stable';
@@ -54,4 +55,5 @@ export const features = [
     editorconfig,
     eslintv9,
     dprint,
+    gitignore,
 ];
