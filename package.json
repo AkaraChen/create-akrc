@@ -10,7 +10,8 @@
         "dev": "bunchee --watch",
         "fmt": "dprint fmt",
         "lint": "eslint  .",
-        "lint:fix": "eslint --fix ."
+        "lint:fix": "eslint --fix .",
+        "prepublishOnly": "pnpm build"
     },
     "keywords": [],
     "author": "",
