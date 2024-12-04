@@ -23,9 +23,12 @@ export const gitignore: IFeature<GitIgnore> = {
                 Effect.dieMessage('Failed to fetch gitignore templates'),
             ),
         );
-        const selected = yield* prompt<keyof typeof data>({
-            name: 'gitignore',
+        const { selected } = yield* prompt<{
+            selected: keyof typeof data;
+        }>({
+            name: 'selected',
             type: 'autocomplete',
+            multiple: true,
             message: 'Select a gitignore template',
             choices: Object.keys(data),
         });

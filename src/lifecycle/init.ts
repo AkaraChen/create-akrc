@@ -36,8 +36,9 @@ export const init = (ctx: Context) => {
             const selected = yield* prompt<{
                 selected: string[];
             }>({
-                type: 'multiselect',
+                type: 'autocomplete',
                 name: 'selected',
+                multiple: true,
                 message: 'Select features to setup',
                 choices: nonEnabled,
             }).pipe(
