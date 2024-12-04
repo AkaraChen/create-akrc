@@ -22,7 +22,7 @@ export const bunchee: IFeature = {
                 ctx.makeCommand(
                     commands.dlx.concat(ctx.pm, {
                         package: 'bunchee',
-                        args: ['--prepare'],
+                        args: ['prepare'],
                     }),
                 ),
             );
