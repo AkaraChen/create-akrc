@@ -2,14 +2,12 @@ import { prompt } from '@/core/utils';
 import { Effect } from 'effect';
 import type { IFeature } from '../type';
 
-const config = '.gitignore';
-
 interface GitIgnore {
     name: string;
-    content: string;
+    contents: string;
 }
 
-export const gitignore: IFeature<GitIgnore> = {
+export const gitignore: IFeature<Array<GitIgnore>> = {
     name: 'gitignore',
     options: Effect.gen(function* () {
         const data = yield* Effect.tryPromise(async () => {
@@ -24,7 +22,7 @@ export const gitignore: IFeature<GitIgnore> = {
             ),
         );
         const { selected } = yield* prompt<{
-            selected: keyof typeof data;
+            selected: Array<keyof typeof data>;
         }>({
             name: 'selected',
             type: 'autocomplete',
@@ -32,17 +30,18 @@ export const gitignore: IFeature<GitIgnore> = {
             message: 'Select a gitignore template',
             choices: Object.keys(data),
         });
-        return data[selected] as GitIgnore;
+        return selected.map(name => data[name]!)
     }),
     setup(ctx, options) {
         return Effect.gen(function* () {
-            yield* ctx.addGitignore(options.name, options.content.split('\n'));
+            for (const option of options) {
+                yield* ctx.addGitignore(option.name, option.contents.split('\n'));
+            }
         });
     },
-    detect(ctx) {
+    detect() {
         return Effect.gen(function* () {
-            const fs = yield* ctx.fs;
-            return yield* fs.exists(yield* ctx.join(config));
-        });
+            return false;
+        })
     },
 };
