@@ -11,6 +11,7 @@ import { husky } from './quality/husky';
 import { knip } from './quality/knip';
 import { lefthook } from './quality/lefthook';
 import { lintStaged } from './quality/lint-staged';
+import { oxlint } from './quality/oxlint';
 import { prettier } from './quality/prettier';
 import { skott } from './quality/skott';
 import { syncpack } from './quality/syncpack';
@@ -56,4 +57,5 @@ export const features = [
     eslintv9,
     dprint,
     gitignore,
+    oxlint,
 ];
