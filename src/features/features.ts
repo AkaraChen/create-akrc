@@ -1,5 +1,6 @@
 import { bunchee } from './bundler/bunchee';
 import { rslib } from './bundler/rslib';
+import { tsdown } from './bundler/tsdown';
 import { tsup } from './bundler/tsup';
 import { typedoc } from './documention/typedoc';
 import { vitepress } from './documention/vitepress';
@@ -58,4 +59,5 @@ export const features = [
     dprint,
     gitignore,
     oxlint,
+    tsdown,
 ];
