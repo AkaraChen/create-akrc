@@ -3,7 +3,7 @@ import { type PM, detectPM } from '@akrc/monorepo-tools';
 import { Command, CommandExecutor, FileSystem, Path } from '@effect/platform';
 import { Effect, Option, pipe } from 'effect';
 import { getDep } from 'fnpm-toolkit';
-import Handlebars from 'handlebars';
+import Mustache from 'mustache';
 import { commands } from 'pm-combo';
 import { omit } from 'radash';
 import { glob } from 'tinyglobby';
@@ -219,7 +219,8 @@ export class Context {
                 `${name}.hbs`,
             );
             const content = yield* fs.readFileString(filePath);
-            return Handlebars.compile(content);
+            return (data: Record<string, unknown> | null) =>
+                Mustache.render(content, data);
         });
     }
 
