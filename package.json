@@ -7,7 +7,7 @@
         "check": "pnpm run check:biome && pnpm run knip && pnpm run lint:fix && pnpm tsc --noEmit",
         "check:biome": "biome check . --write",
         "knip": "knip",
-        "build": "bunchee --sourcemap false --runtime nodejs --target es2022",
+        "build": "bunchee --sourcemap false --runtime nodejs --target es2022 --minify",
         "dev": "bunchee --watch",
         "fmt": "dprint fmt",
         "lint": "eslint  .",
