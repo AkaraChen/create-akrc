@@ -22,15 +22,6 @@ importers:
       '@akrc/yaml':
         specifier: ^4.2.0
         version: 4.2.0
-      '@effect/platform':
-        specifier: ^0.84.8
-        version: 0.84.8(effect@3.16.4)
-      '@effect/platform-node':
-        specifier: ^0.85.7
-        version: 0.85.7(@effect/cluster@0.38.7(@effect/platform@0.84.8(effect@3.16.4))(@effect/rpc@0.61.8(@effect/platform@0.84.8(effect@3.16.4))(effect@3.16.4))(@effect/sql@0.37.9(@effect/experimental@0.48.9(@effect/platform@0.84.8(effect@3.16.4))(effect@3.16.4))(@effect/platform@0.84.8(effect@3.16.4))(effect@3.16.4))(@effect/workflow@0.1.5(@effect/platform@0.84.8(effect@3.16.4))(@effect/rpc@0.61.8(@effect/platform@0.84.8(effect@3.16.4))(effect@3.16.4))(effect@3.16.4))(effect@3.16.4))(@effect/platform@0.84.8(effect@3.16.4))(@effect/rpc@0.61.8(@effect/platform@0.84.8(effect@3.16.4))(effect@3.16.4))(@effect/sql@0.37.9(@effect/experimental@0.48.9(@effect/platform@0.84.8(effect@3.16.4))(effect@3.16.4))(@effect/platform@0.84.8(effect@3.16.4))(effect@3.16.4))(effect@3.16.4)
-      effect:
-        specifier: ^3.16.4
-        version: 3.16.4
       enquirer:
         specifier: ^2.4.1
         version: 2.4.1(patch_hash=592058f54e9f25d7da917025ac9b4021495d67d823c6699ff1edca21bb4ca8f0)
@@ -59,6 +50,12 @@ importers:
       '@biomejs/biome':
         specifier: 1.9.4
         version: 1.9.4
+      '@effect/platform':
+        specifier: ^0.84.8
+        version: 0.84.8(effect@3.16.4)
+      '@effect/platform-node':
+        specifier: ^0.85.7
+        version: 0.85.7(@effect/cluster@0.38.7(@effect/platform@0.84.8(effect@3.16.4))(@effect/rpc@0.61.8(@effect/platform@0.84.8(effect@3.16.4))(effect@3.16.4))(@effect/sql@0.37.9(@effect/experimental@0.48.9(@effect/platform@0.84.8(effect@3.16.4))(effect@3.16.4))(@effect/platform@0.84.8(effect@3.16.4))(effect@3.16.4))(@effect/workflow@0.1.5(@effect/platform@0.84.8(effect@3.16.4))(@effect/rpc@0.61.8(@effect/platform@0.84.8(effect@3.16.4))(effect@3.16.4))(effect@3.16.4))(effect@3.16.4))(@effect/platform@0.84.8(effect@3.16.4))(@effect/rpc@0.61.8(@effect/platform@0.84.8(effect@3.16.4))(effect@3.16.4))(@effect/sql@0.37.9(@effect/experimental@0.48.9(@effect/platform@0.84.8(effect@3.16.4))(effect@3.16.4))(@effect/platform@0.84.8(effect@3.16.4))(effect@3.16.4))(effect@3.16.4)
       '@types/mustache':
         specifier: ^4.2.6
         version: 4.2.6
@@ -71,6 +68,9 @@ importers:
       dprint:
         specifier: 0.50.0
         version: 0.50.0
+      effect:
+        specifier: ^3.16.4
+        version: 3.16.4
       eslint:
         specifier: 9.28.0
         version: 9.28.0(jiti@2.4.2)

@@ -3,13 +3,11 @@ import type { IFeature, Mode } from '@/features/type';
 import { exec } from '@/lifecycle/exec';
 import { init } from '@/lifecycle/init';
 import { teardown } from '@/lifecycle/teardown';
-import {
-    NodeCommandExecutor,
-    NodeFileSystem,
-    NodePath,
-    NodeRuntime,
-} from '@effect/platform-node';
-import { Effect, Layer } from 'effect';
+import { Layer, Effect } from 'effect'
+import * as NodeCommandExecutor from '@effect/platform-node/NodeCommandExecutor';
+import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
+import * as NodePath from '@effect/platform-node/NodePath';
+import * as NodeRuntime from '@effect/platform-node/NodeRuntime';
 
 const Live = NodeCommandExecutor.layer.pipe(
     Layer.provideMerge(NodeFileSystem.layer),
