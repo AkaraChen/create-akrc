@@ -32,7 +32,7 @@ export const Order = {
 
 export type Order = (typeof Order)[keyof typeof Order];
 
-export interface IFeature<T = null> {
+export interface IFeature<T = unknown> {
     name: string;
     options?: Effect.Effect<T>;
     order?: Order;

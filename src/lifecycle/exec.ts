@@ -2,11 +2,11 @@ import type { Context } from '@/core/core';
 import type { IFeature, Mode } from '@/features/type';
 import { Effect } from 'effect';
 
-export const exec = <T>(
+export const exec = (
     ctx: Context,
     task: {
         mode: Mode;
-        features: IFeature<T>[];
+        features: Array<IFeature>;
     },
 ) => {
     const { features, mode } = task;
@@ -15,11 +15,8 @@ export const exec = <T>(
             mode === 'setup'
                 ? yield* Effect.forEach(features, (features) => {
                       return Effect.gen(function* () {
-                          const option = features.options
-                              ? yield* features.options
-                              : (null as T);
                           return yield* features
-                              .setup(ctx, option)
+                              .setup(ctx, features.options)
                               .pipe(Effect.withLogSpan(features.name));
                       });
                   })
