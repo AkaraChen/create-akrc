@@ -20,8 +20,8 @@ importers:
         specifier: 0.0.3
         version: 0.0.3(@typescript-eslint/eslint-plugin@8.5.0(@typescript-eslint/parser@8.5.0(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.28.0(jiti@2.4.2))(tailwindcss@3.4.17)(typescript@5.8.3)
       '@akrc/monorepo-tools':
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^4.0.1
+        version: 4.0.1
       '@akrc/tsconfig':
         specifier: ^2.0.0
         version: 2.0.0
@@ -100,8 +100,8 @@ packages:
   '@akrc/eslint-config@0.0.3':
     resolution: {integrity: sha512-MwoCxXr6TK7SOA1ZQUlgO0Y+T1ibgegiHWV9eI1WrwTaO9S2TvsI7rVa0dxPd1coalwqi4q6D3O3jMxyiAor5g==}
 
-  '@akrc/monorepo-tools@4.0.0':
-    resolution: {integrity: sha512-L4jZTR+753NXWd4QWnxFHhyDpWfj4npiBsbJzUiwr+18NfdnEBdh92LMEZKEeFejW5nPrUxrlKQBe5olobnTBw==}
+  '@akrc/monorepo-tools@4.0.1':
+    resolution: {integrity: sha512-B8uNfdTmYV2F+RFWyAZS/iQIwVuUWMkqSvQaK/zG9THmSb6lOCvN2QcTNTVf5nTLUpTlA2BzBd+sYmSIF5/f3Q==}
 
   '@akrc/tsconfig@2.0.0':
     resolution: {integrity: sha512-mxU+OWKI/oAQIoQlwZUSpbbdTJoADtF+EnTP0omx/L8ovuOau2lV+vByj4zyQW9xLA1c/pbRPs0Gd34XT4nViw==}
@@ -2642,7 +2642,7 @@ snapshots:
       - typescript
       - vitest
 
-  '@akrc/monorepo-tools@4.0.0': {}
+  '@akrc/monorepo-tools@4.0.1': {}
 
   '@akrc/tsconfig@2.0.0': {}
 

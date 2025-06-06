@@ -7,7 +7,7 @@
         "check": "pnpm run check:biome && pnpm run knip && pnpm run lint:fix && pnpm tsc --noEmit",
         "check:biome": "biome check . --write",
         "knip": "knip",
-        "build": "bunchee --minify --runtime node --sourcemap false",
+        "build": "bunchee --sourcemap false --runtime nodejs --target es2022",
         "dev": "bunchee --watch",
         "fmt": "dprint fmt",
         "lint": "eslint  .",
@@ -22,7 +22,7 @@
     },
     "devDependencies": {
         "@akrc/eslint-config": "0.0.3",
-        "@akrc/monorepo-tools": "^4.0.0",
+        "@akrc/monorepo-tools": "^4.0.1",
         "@akrc/tsconfig": "^2.0.0",
         "@akrc/yaml": "^4.2.0",
         "@biomejs/biome": "1.9.4",
