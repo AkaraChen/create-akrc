@@ -1,13 +1,13 @@
 {
     "name": "create-akrc",
-    "version": "0.1.0-beta.1",
+    "version": "0.1.0-beta.2",
     "description": "",
     "type": "module",
     "scripts": {
         "check": "pnpm run check:biome && pnpm run knip && pnpm run lint:fix && pnpm tsc --noEmit",
         "check:biome": "biome check . --write",
         "knip": "knip",
-        "build": "bunchee --minify --runtime node",
+        "build": "bunchee --minify --runtime node --sourcemap false",
         "dev": "bunchee --watch",
         "fmt": "dprint fmt",
         "lint": "eslint  .",
