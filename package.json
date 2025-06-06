@@ -7,7 +7,7 @@
         "check": "pnpm run check:biome && pnpm run knip && pnpm run lint:fix && pnpm tsc --noEmit",
         "check:biome": "biome check . --write",
         "knip": "knip",
-        "build": "bunchee",
+        "build": "bunchee --minify",
         "dev": "bunchee --watch",
         "fmt": "dprint fmt",
         "lint": "eslint  .",
@@ -31,10 +31,16 @@
         "eslint": "9.28.0",
         "knip": "^5.60.2",
         "mustache": "^4.2.0",
+        "radash": "^12.1.0",
+        "tinyglobby": "^0.2.14",
+        "try-files": "^1.1.0",
         "type-fest": "^4.41.0",
         "typescript": "^5.8.3"
     },
-    "files": ["dist", "src/templates"],
+    "files": [
+        "dist",
+        "src/templates"
+    ],
     "bin": {
         "create-akrc": "./dist/bin/create-akrc.js"
     },
@@ -49,10 +55,7 @@
         "knitwork": "^1.2.0",
         "latest-version": "^9.0.0",
         "package-directory": "^8.1.0",
-        "pm-combo": "^1.11.8",
-        "radash": "^12.1.0",
-        "tinyglobby": "^0.2.14",
-        "try-files": "^1.1.0"
+        "pm-combo": "^1.11.8"
     },
     "packageManager": "pnpm@10.11.1",
     "pnpm": {
