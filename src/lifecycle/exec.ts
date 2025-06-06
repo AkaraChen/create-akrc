@@ -11,24 +11,40 @@ export const exec = (
 ) => {
     const { features, mode } = task;
     return Effect.gen(function* () {
-        const result =
-            mode === 'setup'
-                ? yield* Effect.forEach(features, (features) => {
-                      return Effect.gen(function* () {
-                          return yield* features
-                              .setup(ctx, features.options)
-                              .pipe(Effect.withLogSpan(features.name));
-                      });
-                  })
-                : yield* Effect.forEach(features, (features) => {
-                      return Effect.gen(function* () {
-                          if (features.teardown) {
-                              yield* features
-                                  .teardown(ctx)
-                                  .pipe(Effect.withLogSpan(features.name));
-                          }
-                      });
-                  });
+        // const result =
+        //     mode === 'setup'
+        //         ? yield* Effect.forEach(features, (feature) => {
+        //               return Effect.gen(function* () {
+        //                   return yield* feature
+        //                       .setup(ctx, feature.options)
+        //                       .pipe(Effect.withLogSpan(feature.name));
+        //               });
+        //           })
+        //         : yield* Effect.forEach(features, (feature) => {
+        //               return Effect.gen(function* () {
+        //                   if (feature.teardown) {
+        //                       yield* feature
+        //                           .teardown(ctx)
+        //                           .pipe(Effect.withLogSpan(feature.name));
+        //                   }
+        //               });
+        //           });
+        const result = yield* Effect.forEach(features, (feature) => {
+            return Effect.gen(function* () {
+                switch (mode) {
+                    case 'setup':
+                        return yield* feature
+                            .setup(ctx, feature.options)
+                            .pipe(Effect.withLogSpan(feature.name));
+                    case 'teardown':
+                        if (feature.teardown) {
+                            return yield* feature
+                                .teardown(ctx)
+                                .pipe(Effect.withLogSpan(feature.name));
+                        }
+                }
+            });
+        });
         return result.filter((x) => !!x);
     });
 };
