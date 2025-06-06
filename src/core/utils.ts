@@ -4,7 +4,7 @@ import latestVersion, {
     PackageNotFoundError,
     VersionNotFoundError,
 } from 'latest-version';
-import { packageDirectory } from 'pkg-dir';
+import { packageDirectory } from 'package-directory';
 
 type UnknownError = Error;
 type LatestVersionError =
