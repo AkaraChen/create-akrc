@@ -20,46 +20,42 @@
         "access": "public"
     },
     "devDependencies": {
-        "@akrc/eslint-config": "0.0.0",
-        "@akrc/tsconfig": "^1.1.0",
-        "@biomejs/biome": "1.8.3",
-        "@types/node": "^22.5.1",
-        "bunchee": "^5.3.2",
-        "dprint": "0.47.2",
-        "eslint": "9.10.0",
-        "knip": "^5.29.2",
-        "type-fest": "^4.26.0",
-        "typescript": "^5.5.4"
+        "@akrc/eslint-config": "0.0.3",
+        "@akrc/tsconfig": "^2.0.0",
+        "@biomejs/biome": "1.9.4",
+        "@types/node": "^22.15.30",
+        "bunchee": "^6.5.2",
+        "dprint": "0.50.0",
+        "eslint": "9.28.0",
+        "knip": "^5.60.2",
+        "type-fest": "^4.41.0",
+        "typescript": "^5.8.3"
     },
-    "files": [
-        "dist",
-        "src/templates"
-    ],
+    "files": ["dist", "src/templates"],
     "bin": {
         "create-akrc": "./dist/bin/create-akrc.js"
     },
     "dependencies": {
         "@akrc/monorepo-tools": "^3.0.1",
         "@akrc/yaml": "^4.2.0",
-        "@effect/platform": "^0.64.0",
-        "@effect/platform-node": "^0.59.0",
-        "@effect/schema": "^0.72.3",
-        "effect": "^3.7.2",
+        "@effect/platform": "^0.84.8",
+        "@effect/platform-node": "^0.85.7",
+        "effect": "^3.16.4",
         "enquirer": "^2.4.1",
-        "fnpm-toolkit": "^1.10.0",
+        "fnpm-toolkit": "^1.11.8",
         "handlebars": "^4.7.8",
-        "knitwork": "^1.1.0",
+        "knitwork": "^1.2.0",
         "latest-version": "^9.0.0",
-        "pkg-dir": "^8.0.0",
-        "pm-combo": "^1.9.1",
+        "package-directory": "^8.1.0",
+        "pm-combo": "^1.11.8",
         "radash": "^12.1.0",
-        "tinyglobby": "^0.2.5",
+        "tinyglobby": "^0.2.14",
         "try-files": "^1.1.0"
     },
-    "packageManager": "pnpm@10.9.0+sha512.0486e394640d3c1fb3c9d43d49cf92879ff74f8516959c235308f5a8f62e2e19528a65cdc2a3058f587cde71eba3d5b56327c8c33a97e4c4051ca48a10ca2d5f",
+    "packageManager": "pnpm@10.11.1",
     "pnpm": {
         "overrides": {
-            "is-core-module": "npm:@nolyfill/is-core-module@^1"
+            "is-core-module": "npm:@nolyfill/is-core-module@^1.0.39"
         },
         "patchedDependencies": {
             "enquirer": "patches/enquirer.patch"
