@@ -42,3 +42,5 @@ Now supports generating config for:
 24. [eslint-v9](https://eslint.org/)
 25. [editorconfig](https://editorconfig.org/)
 26. [dprint](https://dprint.dev/)
+27. [oxlint](https://oxc.rs/docs/guide/usage/linter.html)
+28. [tsdown](https://tsdown.dev/)
