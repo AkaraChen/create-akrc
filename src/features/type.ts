@@ -22,13 +22,15 @@ type Task<T> = Effect.Effect<
     | Path.Path
 >;
 
-export enum Order {
-    First = 0,
-    Early = 1,
-    Normal = 2,
-    Late = 3,
-    Final = 4,
-}
+export const Order = {
+    First: 0,
+    Early: 1,
+    Normal: 2,
+    Late: 3,
+    Final: 4,
+} as const;
+
+export type Order = (typeof Order)[keyof typeof Order];
 
 export interface IFeature<T = null> {
     name: string;

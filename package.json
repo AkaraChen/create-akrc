@@ -4,7 +4,8 @@
     "description": "",
     "type": "module",
     "scripts": {
-        "check": "biome check . --write",
+        "check": "pnpm run check:biome && pnpm run knip && pnpm run lint:fix && pnpm tsc --noEmit",
+        "check:biome": "biome check . --write",
         "knip": "knip",
         "build": "bunchee",
         "dev": "bunchee --watch",

@@ -17,10 +17,13 @@ type DepInput = {
 };
 
 export class Context {
-    constructor(
-        public readonly root: string,
-        public readonly pm: PM,
-    ) {}
+    public readonly root: string;
+    public readonly pm: PM;
+
+    constructor(root: string, pm: PM) {
+        this.root = root;
+        this.pm = pm;
+    }
 
     fs = FileSystem.FileSystem;
     path = Path.Path;
