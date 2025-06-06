@@ -1,5 +1,5 @@
 import type { IFeature } from '@/features/type';
-import { Command } from '@effect/platform';
+import * as Command from '@effect/platform/Command';
 import { Effect, pipe } from 'effect';
 import { commands } from 'pm-combo';
 

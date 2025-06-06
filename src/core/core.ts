@@ -1,6 +1,9 @@
 import { ParserError } from '@/errors/schema';
 import { type PM, detectPM } from '@akrc/monorepo-tools';
-import { Command, CommandExecutor, FileSystem, Path } from '@effect/platform';
+import * as Command from '@effect/platform/Command';
+import * as CommandExecutor from '@effect/platform/CommandExecutor';
+import * as FileSystem from '@effect/platform/FileSystem';
+import * as Path from '@effect/platform/Path';
 import { Effect, Option, pipe } from 'effect';
 import { getDep } from 'fnpm-toolkit';
 import Mustache from 'mustache';

@@ -1,6 +1,7 @@
 import type { Context } from '@/core/core';
 import { prompt } from '@/core/utils';
-import { FileSystem, Path } from '@effect/platform';
+import * as FileSystem from '@effect/platform/FileSystem';
+import * as Path from '@effect/platform/Path';
 import { Effect, Option } from 'effect';
 import { tryFile } from 'try-files';
 
