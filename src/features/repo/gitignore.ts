@@ -30,18 +30,19 @@ export const gitignore: IFeature<Array<GitIgnore>> = {
             message: 'Select a gitignore template',
             choices: Object.keys(data),
         });
-        return selected.map(name => data[name]!)
+        return selected.map((name) => data[name]!);
     }),
     setup(ctx, options) {
         return Effect.gen(function* () {
             for (const option of options) {
-                yield* ctx.addGitignore(option.name, option.contents.split('\n'));
+                yield* ctx.addGitignore(
+                    option.name,
+                    option.contents.split('\n'),
+                );
             }
         });
     },
     detect() {
-        return Effect.gen(function* () {
-            return false;
-        })
+        return Effect.succeed(false);
     },
 };
