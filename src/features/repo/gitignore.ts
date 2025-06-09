@@ -18,7 +18,7 @@ export const gitignore: IFeature<Array<GitIgnore>> = {
             return json as Record<string, GitIgnore>;
         }).pipe(
             Effect.catchAll(() =>
-                Effect.dieMessage('Failed to fetch gitignore templates'),
+                Effect.die('Failed to fetch gitignore templates'),
             ),
         );
         const { selected } = yield* prompt<{

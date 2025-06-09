@@ -26,7 +26,7 @@ export function getLatestVersion(name: string) {
                 e instanceof PackageNotFoundError ||
                 e instanceof VersionNotFoundError
             ) {
-                return Effect.dieMessage(
+                return Effect.die(
                     `Failed to get the latest version of ${name}`,
                 );
             }
@@ -40,7 +40,7 @@ export function getLatestVersion(name: string) {
 
 export function prompt<T>(options: PromptOptions) {
     return Effect.tryPromise(() => enquirer.prompt<T>(options)).pipe(
-        Effect.catchAll(() => Effect.dieMessage('Failed to prompt')),
+        Effect.catchAll(() => Effect.die('Failed to prompt')),
     );
 }
 
