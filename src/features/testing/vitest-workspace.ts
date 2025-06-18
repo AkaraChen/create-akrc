@@ -12,7 +12,7 @@ export const vitestWorkspace: IFeature = {
             const template = yield* ctx.template('vitest.workspace');
             const fs = yield* ctx.fs;
             yield* fs.writeFileString(
-                yield* ctx.join('vitest.workspace.ts'),
+                yield* ctx.join('vitest.config.ts'),
                 template(null),
             );
         });
