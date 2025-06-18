@@ -41,7 +41,7 @@ export const tsconfig: IFeature<{
     teardown(ctx) {
         return Effect.gen(function* () {
             const fs = yield* ctx.fs;
-            yield* fs.remove(yield* ctx.join('tsconfig.json'));
+            yield* Effect.forEach(configFiles, (file) => fs.remove(file));
             yield* ctx.removeScripts(scripts);
             yield* ctx.removeDeps(...deps);
         });
