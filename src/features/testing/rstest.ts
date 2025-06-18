@@ -2,7 +2,8 @@ import type { IFeature } from '@/features/type';
 import { Effect } from 'effect';
 
 const scripts = {
-    test: 'rstest',
+    test: 'rstest run',
+    'test:watch': 'rstest',
 };
 
 const configFiles = [
