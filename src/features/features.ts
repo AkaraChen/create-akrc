@@ -24,6 +24,7 @@ import { yarnStable } from './repo/yarn-stable';
 import { cypress } from './testing/cypress';
 import { jest } from './testing/jest';
 import { playwright } from './testing/playwright';
+import { rstest } from './testing/rstest';
 import { vitest } from './testing/vitest';
 import { vitestWorkspace } from './testing/vitest-workspace';
 import { storybook } from './web/storybook';
@@ -52,6 +53,7 @@ export const features = [
     cypress,
     turbo,
     vitestWorkspace,
+    rstest,
     lintStaged,
     husky,
     editorconfig,
