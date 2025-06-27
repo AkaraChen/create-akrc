@@ -14,8 +14,12 @@ export const exec = (
         const result = yield* Effect.forEach(features, (feature) => {
             return Effect.gen(function* () {
                 switch (mode) {
-                    case 'setup':
-                        return yield* feature.setup(ctx, feature.options);
+                    case 'setup': {
+                        const options = feature.options
+                            ? yield* feature.options
+                            : undefined;
+                        return yield* feature.setup(ctx, options);
+                    }
                     case 'teardown':
                         if (feature.teardown) {
                             return yield* feature.teardown(ctx);
